@@ -1,11 +1,12 @@
 "use client";
 
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import React from "react";
 import NavBar from "../../components/NavBar";
 import Filter from "../../components/Filters";
 import Footer from "../../components/Footer";
 import EventPreviewCard from "../../components/EventPreviewCard";
+import { useEventContext } from "../../contexts/EventContext";
 
 const events = [
   {
@@ -43,6 +44,14 @@ export default function SearchResult() {
   const searchParams = useSearchParams();
   const query = searchParams.get("query")?.toLowerCase() || "";
 
+  const { setSelectedEvent } = useEventContext();
+  const router = useRouter();
+
+  const handleCardClick = (event: any) => {
+    setSelectedEvent(event);
+    router.push("/event");
+  };
+
   const filteredEvents = events
     .map((event) => {
       const titleMatch = event.title.toLowerCase().includes(query);
@@ -72,7 +81,9 @@ export default function SearchResult() {
               </p>
             )}
             {filteredEvents.map((event, index) => (
-              <EventPreviewCard key={index} event={event} />
+              <div key={index} onClick={handleCardClick}>
+                <EventPreviewCard event={event} />
+              </div>
             ))}
           </div>
         </div>

@@ -1,15 +1,15 @@
 import { DarkThemeToggle } from "flowbite-react";
-import NavBar from "./components/NavBar";
-import EventPreviewCard from "./components/EventPreviewCard";
-import UserEventCard from "./components/UserEventCard";
-import SignInForm from "./components/SignInForm";
-import SignUpForm from "./components/SignUpForm";
-import CreateEvent from "./components/CreateEvent";
-import EventDetails from "./components/Event";
-import Sidebar from "./components/Sidebar";
-import Footer from "./components/Footer";
-import EditProfile from "./components/EditProfile";
-import Filter from "./components/Filters";
+import NavBar from "../components/NavBar";
+import EventPreviewCard from "../components/EventPreviewCard";
+import UserEventCard from "../components/UserEventCard";
+import SignInForm from "../components/SignInForm";
+import SignUpForm from "../components/SignUpForm";
+import CreateEvent from "../components/CreateEvent";
+import EventDetails from "../components/Event";
+import Sidebar from "../components/Sidebar";
+import Footer from "../components/Footer";
+import EditProfile from "../components/EditProfile";
+import Filter from "../components/Filters";
 
 const event = {
   mainImage:
