@@ -1,6 +1,6 @@
-import EventDetails from "../components/Event";
-import Footer from "../components/Footer";
-import NavBar from "../components/NavBar";
+import EventDetails from "../../components/Event";
+import Footer from "../../components/Footer";
+import NavBar from "../../components/NavBar";
 
 const event = {
   mainImage:

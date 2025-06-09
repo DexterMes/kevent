@@ -1,9 +1,9 @@
 "use client";
 import { useState } from "react";
-import EditProfile from "../components/EditProfile";
-import NavBar from "../components/NavBar";
-import Sidebar from "../components/Sidebar";
-import UserEventCard from "../components/UserEventCard";
+import EditProfile from "../../components/EditProfile";
+import NavBar from "../../components/NavBar";
+import Sidebar from "../../components/Sidebar";
+import UserEventCard from "../../components/UserEventCard";
 
 export default function Profile() {
   // State to manage the selected sidebar menu item

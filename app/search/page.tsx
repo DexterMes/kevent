@@ -2,10 +2,10 @@
 
 import { useSearchParams } from "next/navigation";
 import React from "react";
-import NavBar from "../components/NavBar";
-import Filter from "../components/Filters";
-import Footer from "../components/Footer";
-import EventPreviewCard from "../components/EventPreviewCard";
+import NavBar from "../../components/NavBar";
+import Filter from "../../components/Filters";
+import Footer from "../../components/Footer";
+import EventPreviewCard from "../../components/EventPreviewCard";
 
 const events = [
   {
