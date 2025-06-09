@@ -1,7 +1,67 @@
+"use client";
+
 import Link from "next/link";
-import React from "react";
+import React, { useState } from "react";
+import { useRouter } from "next/navigation";
 
 const SignUpForm = () => {
+  const router = useRouter();
+
+  const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    password: "",
+    batch: "",
+    department: "",
+    year: "",
+    semester: "",
+    termsAccepted: false,
+  });
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
+  ) => {
+    const { id, value, type } = e.target;
+
+    const newValue =
+      type === "checkbox" && e.target instanceof HTMLInputElement
+        ? e.target.checked
+        : value;
+
+    setFormData((prev) => ({ ...prev, [id]: newValue }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (!formData.termsAccepted) {
+      alert("Please accept the terms and conditions.");
+      return;
+    }
+
+    try {
+      const response = await fetch("http://localhost:5000/users/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          firstName: formData.firstName,
+          lastName: formData.lastName,
+          email: formData.email,
+          password: formData.password,
+          batch: Number(formData.batch),
+          department: formData.department,
+          year: Number(formData.year),
+        }),
+      });
+
+      if (!response.ok) alert("Registration failed!");
+      else router.push("/login");
+    } catch (err) {
+      console.error(err);
+      alert("Something went wrong!");
+    }
+  };
   return (
     <div className="w-full max-w-md rounded-lg border border-gray-200 bg-white p-6 shadow-md dark:border-gray-700 dark:bg-gray-800">
       <form className="space-y-3">
@@ -13,31 +73,35 @@ const SignUpForm = () => {
         <div className="grid gap-6 md:grid-cols-2">
           <div>
             <label
-              htmlFor="first_name"
+              htmlFor="firstName"
               className="mb-1 block text-sm font-medium text-gray-900 dark:text-white"
             >
               First Name
             </label>
             <input
               type="text"
-              id="first_name"
+              id="firstName"
               placeholder="John"
               required
+              value={formData.firstName}
+              onChange={handleChange}
               className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400"
             />
           </div>
           <div>
             <label
-              htmlFor="last_name"
+              htmlFor="lastName"
               className="mb-1 block text-sm font-medium text-gray-900 dark:text-white"
             >
               Last Name
             </label>
             <input
               type="text"
-              id="last_name"
+              id="lastName"
               placeholder="Doe"
               required
+              value={formData.lastName}
+              onChange={handleChange}
               className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400"
             />
           </div>
@@ -56,6 +120,8 @@ const SignUpForm = () => {
             id="email"
             placeholder="john.doe@company.com"
             required
+            value={formData.email}
+            onChange={handleChange}
             className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400"
           />
         </div>
@@ -71,6 +137,8 @@ const SignUpForm = () => {
           <select
             id="department"
             required
+            value={formData.department}
+            onChange={handleChange}
             className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
           >
             <option value="">Select Department</option>
@@ -86,16 +154,18 @@ const SignUpForm = () => {
           {/* Year */}
           <div>
             <label
-              htmlFor="year"
+              htmlFor="batch"
               className="mb-1 block text-sm font-medium text-gray-900 dark:text-white"
             >
               Year
             </label>
             <input
               type="text"
-              id="year"
+              id="batch"
               placeholder="2025"
               required
+              value={formData.batch}
+              onChange={handleChange}
               className=" block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400"
             />
           </div>
@@ -103,19 +173,21 @@ const SignUpForm = () => {
           {/* Semester Dropdown */}
           <div>
             <label
-              htmlFor="semester"
+              htmlFor="year"
               className="mb-1 block text-sm font-medium text-gray-900 dark:text-white"
             >
               Semester
             </label>
             <select
-              id="semester"
+              id="year"
               required
+              value={formData.year}
+              onChange={handleChange}
               className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
             >
               <option value="">Select Semester</option>
-              <option value="1st">1st</option>
-              <option value="2nd">2nd</option>
+              <option value="1">1st</option>
+              <option value="2">2nd</option>
             </select>
           </div>
         </div>
@@ -133,6 +205,8 @@ const SignUpForm = () => {
             id="password"
             placeholder="•••••••••"
             required
+            value={formData.password}
+            onChange={handleChange}
             className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400"
           />
         </div>
@@ -141,14 +215,16 @@ const SignUpForm = () => {
         <div className="flex items-start">
           <div className="flex h-5 items-center">
             <input
-              id="terms"
+              id="termsAccepted"
               type="checkbox"
               required
+              checked={formData.termsAccepted}
+              onChange={handleChange}
               className="focus:ring-3 h-4 w-4 rounded border border-gray-300 bg-gray-50 focus:ring-blue-300 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800"
             />
           </div>
           <label
-            htmlFor="terms"
+            htmlFor="termsAccepted"
             className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
           >
             I agree with the{" "}
@@ -165,6 +241,7 @@ const SignUpForm = () => {
         {/* Create Account Button */}
         <button
           type="submit"
+          onClick={handleSubmit}
           className="w-full rounded-lg bg-blue-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700"
         >
           Create Account
