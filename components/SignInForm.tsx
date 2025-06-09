@@ -1,11 +1,13 @@
 "use client";
 
+import { useAuthContext } from "@/contexts/AuthContext";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 
 const SignInForm = () => {
   const router = useRouter();
+  const { setToken, setUser } = useAuthContext();
 
   const [formData, setFormData] = useState({ email: "", password: "" });
 
@@ -34,9 +36,7 @@ const SignInForm = () => {
         return;
       }
 
-      // You can save token or user data to localStorage or cookies here if needed
-      // localStorage.setItem("token", result.token);
-
+      setToken(result.token);
       router.push("/");
     } catch (error) {
       console.error(error);

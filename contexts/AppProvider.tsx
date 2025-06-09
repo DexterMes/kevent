@@ -1,4 +1,5 @@
 "use client";
+import { AuthProvider } from "./AuthContext";
 import { EventProvider } from "./EventContext";
 
 export default function AppProviders({
@@ -6,5 +7,9 @@ export default function AppProviders({
 }: {
   children: React.ReactNode;
 }) {
-  return <EventProvider>{children}</EventProvider>;
+  return (
+    <AuthProvider>
+      <EventProvider>{children}</EventProvider>
+    </AuthProvider>
+  );
 }

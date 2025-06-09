@@ -3,10 +3,15 @@ import { DarkThemeToggle } from "flowbite-react/components/DarkThemeToggle";
 import Link from "next/link";
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useAuthContext } from "@/contexts/AuthContext";
+import Image from "next/image";
 
 const NavBar = () => {
   const [searchText, setSearchText] = useState("");
+  const { user } = useAuthContext();
   const router = useRouter();
+
+  console.log(user);
 
   const handleSearch = () => {
     if (searchText.trim()) {
@@ -18,8 +23,8 @@ const NavBar = () => {
     if (e.key === "Enter") handleSearch();
   };
   return (
-    <nav className="h-14 border-b-1 border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
-      <div className="flex w-full items-center justify-between px-4 py-2">
+    <nav className="flex h-14 w-full items-center justify-between border-b-1 border-gray-200 bg-white px-4 py-2 dark:border-gray-700 dark:bg-gray-900">
+      <div className="flex flex-row space-x-10">
         <Link
           href="/"
           className="flex items-center space-x-3 rtl:space-x-reverse"
@@ -56,20 +61,30 @@ const NavBar = () => {
             className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2 ps-10 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400"
           />
         </div>
+      </div>
 
-        <div className="flex-1"></div>
-        <Link
-          href="/login"
-          className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-800"
-        >
-          Sign In
-        </Link>
-        <Link
-          href="/profile"
-          className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-800"
-        >
-          Profile
-        </Link>
+      <div className="flex h-full flex-row space-x-5">
+        {!user ? (
+          <Link
+            href="/login"
+            className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-800"
+          >
+            Sign In
+          </Link>
+        ) : (
+          <Link
+            href="/profile"
+            className="aspect-square h-full overflow-hidden rounded-full border-2"
+          >
+            <Image
+              src={user.avatarURL}
+              alt="Profile Avatar"
+              width={40}
+              height={40}
+              className="cursor-pointer  rounded-full transition-transform"
+            />
+          </Link>
+        )}
         <DarkThemeToggle />
       </div>
     </nav>
