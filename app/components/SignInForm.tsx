@@ -1,3 +1,4 @@
+import Link from "next/link";
 import React from "react";
 
 const SignInForm = () => {
@@ -65,12 +66,12 @@ const SignInForm = () => {
 
         <div className="text-sm font-medium text-gray-500 dark:text-gray-300">
           Not registered?{" "}
-          <a
-            href="#"
+          <Link
             className="text-blue-700 hover:underline dark:text-blue-500"
+            href="/signup"
           >
             Create account
-          </a>
+          </Link>
         </div>
       </form>
     </div>

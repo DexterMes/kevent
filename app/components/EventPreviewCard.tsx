@@ -1,16 +1,16 @@
 import React from "react";
-import { FaTag, FaHeart } from "react-icons/fa"; // For the pricetag and heart icons
+import { FaTag, FaHeart } from "react-icons/fa";
 
-const EventPreviewCard = () => {
+const EventPreviewCard = ({ event }: { event: any }) => {
   return (
-    <div className="h-64 w-60 rounded-lg border border-gray-200 bg-white shadow dark:border-gray-700 dark:bg-gray-800">
+    <div className="h-64 w-60 cursor-pointer rounded-lg border border-gray-200 bg-white shadow dark:border-gray-700 dark:bg-gray-800">
       <div className="flex h-full flex-col">
         <div className="relative h-2/5 flex-shrink-0">
           <a href="#">
             <img
               className="h-full w-full rounded-lg object-cover"
-              src="https://photographylife.com/wp-content/uploads/2014/08/Nikon-D810.jpg"
-              alt="Event"
+              src={event.mainImage}
+              alt={event.title}
             />
           </a>
           <div className="absolute -bottom-4 right-2 flex h-8 w-8 items-center justify-center rounded-full bg-white shadow-inner">
@@ -20,22 +20,21 @@ const EventPreviewCard = () => {
 
         <div className="flex flex-grow flex-col justify-between p-3">
           <h5 className="text-base font-bold text-gray-900 dark:text-white">
-            Noteworthy Technology Acquisitions 2021
+            {event.title}
           </h5>
-
           <div className="space-y-1">
             <p className="text-xs font-medium text-gray-700 dark:text-gray-400">
-              Time: <span className="font-semibold">10:00 AM - 3:00 PM</span>
+              Time: <span className="font-semibold">{event.time}</span>
             </p>
             <p className="text-xs font-medium text-gray-700 dark:text-gray-400">
-              Date: <span className="font-semibold">January 15, 2025</span>
+              Date: <span className="font-semibold">{event.date}</span>
             </p>
           </div>
-
           <div className="mt-1 flex items-center space-x-2">
             <FaTag className="h-4 w-4 text-gray-700 dark:text-gray-400" />
             <span className="text-xs font-medium text-gray-700 dark:text-gray-400">
-              Price: <span className="font-semibold">$50</span>
+              Organizer:{" "}
+              <span className="font-semibold">{event.organizedBy}</span>
             </span>
           </div>
         </div>
