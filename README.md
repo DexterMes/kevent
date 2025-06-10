@@ -57,18 +57,22 @@ Follow these steps to set up Kevent locally on your machine.
 ### Installation
 
 1. **Clone the repository**:
+
    ```bash
    git clone https://github.com/your-username/kevent.git
    cd kevent
 
    ```
+
 2. **Install dependencies**:
+
    ```bash
    npm install
    # or
    yarn install
 
    ```
+
 3. **Set up environment variables**:
 
    Create a .env.local file in the root directory and add the following variables:

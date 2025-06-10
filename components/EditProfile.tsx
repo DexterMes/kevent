@@ -1,9 +1,11 @@
-"use client";
-import React, { useEffect, useState } from "react";
-import { useAuthContext } from "@/contexts/AuthContext"; // update the path as needed
+"use client"
+
+import React, { useEffect, useState } from "react"
+
+import { useAuthContext } from "../contexts/AuthContext" // update the path as needed
 
 const EditProfile: React.FC = () => {
-  const { user, token, setUser } = useAuthContext();
+  const { user, token, setUser } = useAuthContext()
 
   const [formData, setFormData] = useState({
     firstName: "",
@@ -11,24 +13,16 @@ const EditProfile: React.FC = () => {
     email: "",
     department: "",
     year: "",
-    batch: "",
-  });
+    batch: ""
+  })
 
-  const [initialData, setInitialData] = useState(formData);
-  const [profileImage, setProfileImage] = useState<string | null>(null);
-  const [isChanged, setIsChanged] = useState(false);
+  const [initialData, setInitialData] = useState(formData)
+  const [profileImage, setProfileImage] = useState<string | null>(null)
+  const [isChanged, setIsChanged] = useState(false)
 
   useEffect(() => {
     if (user) {
-      const {
-        firstName = "",
-        lastName = "",
-        email = "",
-        department = "",
-        year = "",
-        batch = "",
-        avatarURL = "",
-      } = user;
+      const { firstName = "", lastName = "", email = "", department = "", year = "", batch = "", avatarURL = "" } = user
 
       const filled = {
         firstName,
@@ -36,79 +30,72 @@ const EditProfile: React.FC = () => {
         email,
         department,
         year,
-        batch,
-      };
-      setFormData(filled);
-      setInitialData(filled);
-      setProfileImage(avatarURL || null);
+        batch
+      }
+      setFormData(filled)
+      setInitialData(filled)
+      setProfileImage(avatarURL || null)
     }
-  }, [user]);
+  }, [user])
 
   useEffect(() => {
-    setIsChanged(JSON.stringify(formData) !== JSON.stringify(initialData));
-  }, [formData, initialData]);
+    setIsChanged(JSON.stringify(formData) !== JSON.stringify(initialData))
+  }, [formData, initialData])
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
-  ) => {
-    const { id, value } = e.target;
-    setFormData((prev) => ({ ...prev, [id]: value }));
-  };
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const { id, value } = e.target
+    setFormData((prev) => ({ ...prev, [id]: value }))
+  }
 
-  const handleProfileImageChange = async (
-    e: React.ChangeEvent<HTMLInputElement>,
-  ) => {
+  const handleProfileImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0] && token) {
-      const file = e.target.files[0];
-      const form = new FormData();
-      form.append("avatar", file);
+      const file = e.target.files[0]
+      const form = new FormData()
+      form.append("avatar", file)
 
       try {
-        const res = await fetch(
-          "http://localhost:5000/users/upload-profileImage",
-          {
-            method: "POST",
-            headers: { Authorization: `Bearer ${token}` },
-            body: form,
-          },
-        );
+        const res = await fetch("http://localhost:5000/users/upload-profileImage", {
+          method: "POST",
+          headers: { Authorization: `Bearer ${token}` },
+          body: form
+        })
 
-        if (!res.ok) throw new Error("Upload failed");
-        const updated = await res.json();
-        setUser((prev: any) => ({ ...prev, avatarURL: updated.avatarURL }));
-        setProfileImage(updated.avatarURL);
+        if (!res.ok) throw new Error("Upload failed")
+        const updated = await res.json()
+        setUser((prev: any) => ({ ...prev, avatarURL: updated.avatarURL }))
+        setProfileImage(updated.avatarURL)
       } catch (err) {
-        console.error(err);
-        alert("Image upload failed");
+        console.error(err)
+        alert("Image upload failed")
       }
     }
-  };
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!token) return;
+    e.preventDefault()
+    if (!token) return
 
     try {
       const res = await fetch("http://localhost:5000/users/update-profile", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${token}`
         },
-        body: JSON.stringify(formData),
-      });
+        body: JSON.stringify(formData)
+      })
 
-      if (!res.ok) throw new Error("Update failed");
-      const updatedUser = await res.json();
-      setUser(updatedUser.user);
-      setInitialData(formData);
-      setIsChanged(false);
-      alert("Profile updated");
+      if (!res.ok) throw new Error("Update failed")
+      const updatedUser = await res.json()
+      setUser(updatedUser.user)
+      setInitialData(formData)
+      setIsChanged(false)
+      alert("Profile updated")
     } catch (err) {
-      console.error(err);
-      alert("Failed to update profile");
+      console.error(err)
+      alert("Failed to update profile")
     }
-  };
+  }
 
   return (
     <div className="mx-auto max-w-2xl p-6">
@@ -116,15 +103,9 @@ const EditProfile: React.FC = () => {
         <div className="relative">
           <div className="h-32 w-32 overflow-hidden rounded-full border border-gray-300 bg-gray-100 dark:border-gray-600 dark:bg-gray-700">
             {profileImage ? (
-              <img
-                src={profileImage}
-                alt="Profile"
-                className="h-full w-full object-cover"
-              />
+              <img src={profileImage} alt="Profile" className="h-full w-full object-cover" />
             ) : (
-              <div className="flex h-full items-center justify-center text-gray-400">
-                No Image
-              </div>
+              <div className="flex h-full items-center justify-center text-gray-400">No Image</div>
             )}
           </div>
           <label
@@ -133,23 +114,14 @@ const EditProfile: React.FC = () => {
           >
             +
           </label>
-          <input
-            type="file"
-            id="profileImage"
-            accept="image/*"
-            onChange={handleProfileImageChange}
-            className="hidden"
-          />
+          <input type="file" id="profileImage" accept="image/*" onChange={handleProfileImageChange} className="hidden" />
         </div>
       </div>
 
       <form onSubmit={handleSubmit}>
         <div className="grid gap-6 md:grid-cols-2">
           <div>
-            <label
-              htmlFor="firstName"
-              className="mb-1 block text-sm font-medium text-gray-900 dark:text-white"
-            >
+            <label htmlFor="firstName" className="mb-1 block text-sm font-medium text-gray-900 dark:text-white">
               First Name
             </label>
             <input
@@ -163,10 +135,7 @@ const EditProfile: React.FC = () => {
           </div>
 
           <div>
-            <label
-              htmlFor="lastName"
-              className="mb-1 block text-sm font-medium text-gray-900 dark:text-white"
-            >
+            <label htmlFor="lastName" className="mb-1 block text-sm font-medium text-gray-900 dark:text-white">
               Last Name
             </label>
             <input
@@ -181,10 +150,7 @@ const EditProfile: React.FC = () => {
         </div>
 
         <div className="mt-4">
-          <label
-            htmlFor="email"
-            className="mb-1 block text-sm font-medium text-gray-900 dark:text-white"
-          >
+          <label htmlFor="email" className="mb-1 block text-sm font-medium text-gray-900 dark:text-white">
             Email
           </label>
           <input
@@ -198,10 +164,7 @@ const EditProfile: React.FC = () => {
         </div>
 
         <div className="mt-4">
-          <label
-            htmlFor="department"
-            className="mb-1 block text-sm font-medium text-gray-900 dark:text-white"
-          >
+          <label htmlFor="department" className="mb-1 block text-sm font-medium text-gray-900 dark:text-white">
             Department
           </label>
           <select
@@ -221,10 +184,7 @@ const EditProfile: React.FC = () => {
 
         <div className="mt-4 grid gap-6 md:grid-cols-2">
           <div>
-            <label
-              htmlFor="year"
-              className="mb-1 block text-sm font-medium text-gray-900 dark:text-white"
-            >
+            <label htmlFor="year" className="mb-1 block text-sm font-medium text-gray-900 dark:text-white">
               Batch
             </label>
             <input
@@ -238,10 +198,7 @@ const EditProfile: React.FC = () => {
           </div>
 
           <div>
-            <label
-              htmlFor="year"
-              className="mb-1 block text-sm font-medium text-gray-900 dark:text-white"
-            >
+            <label htmlFor="year" className="mb-1 block text-sm font-medium text-gray-900 dark:text-white">
               Year
             </label>
             <select
@@ -261,10 +218,7 @@ const EditProfile: React.FC = () => {
         </div>
 
         <div className="mt-4">
-          <label
-            htmlFor="password"
-            className="mb-1 block text-sm font-medium text-gray-900 dark:text-white"
-          >
+          <label htmlFor="password" className="mb-1 block text-sm font-medium text-gray-900 dark:text-white">
             Password
           </label>
           <input
@@ -284,7 +238,7 @@ const EditProfile: React.FC = () => {
         </button>
       </form>
     </div>
-  );
-};
+  )
+}
 
-export default EditProfile;
+export default EditProfile

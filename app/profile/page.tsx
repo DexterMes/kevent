@@ -1,23 +1,21 @@
-"use client";
-import { useState } from "react";
-import EditProfile from "../../components/EditProfile";
-import NavBar from "../../components/NavBar";
-import Sidebar from "../../components/Sidebar";
-import UserEventCard from "../../components/UserEventCard";
+"use client"
+
+import { useState } from "react"
+
+import EditProfile from "../../components/EditProfile"
+import NavBar from "../../components/NavBar"
+import Sidebar from "../../components/Sidebar"
+import UserEventCard from "../../components/UserEventCard"
 
 export default function Profile() {
-  // State to manage the selected sidebar menu item
-  const [selectedOption, setSelectedOption] = useState("profile");
+  const [selectedOption, setSelectedOption] = useState("profile")
 
   return (
     <main>
       <NavBar />
       <div className="flex flex-row">
         {/* Sidebar */}
-        <Sidebar
-          setSelectedOption={setSelectedOption}
-          selectedOption={selectedOption}
-        />
+        <Sidebar setSelectedOption={setSelectedOption} selectedOption={selectedOption} />
 
         {/* Main Content */}
         <div className="flex h-[calc(100vh-3.5rem)] w-full bg-white dark:bg-gray-900">
@@ -58,5 +56,5 @@ export default function Profile() {
         </div>
       </div>
     </main>
-  );
+  )
 }

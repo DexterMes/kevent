@@ -1,11 +1,11 @@
-"use client";
+"use client"
 
-import Link from "next/link";
-import React, { useState } from "react";
-import { useRouter } from "next/navigation";
+import Link from "next/link"
+import { useRouter } from "next/navigation"
+import React, { useState } from "react"
 
 const SignUpForm = () => {
-  const router = useRouter();
+  const router = useRouter()
 
   const [formData, setFormData] = useState({
     firstName: "",
@@ -16,28 +16,23 @@ const SignUpForm = () => {
     department: "",
     year: "",
     semester: "",
-    termsAccepted: false,
-  });
+    termsAccepted: false
+  })
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
-  ) => {
-    const { id, value, type } = e.target;
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const { id, value, type } = e.target
 
-    const newValue =
-      type === "checkbox" && e.target instanceof HTMLInputElement
-        ? e.target.checked
-        : value;
+    const newValue = type === "checkbox" && e.target instanceof HTMLInputElement ? e.target.checked : value
 
-    setFormData((prev) => ({ ...prev, [id]: newValue }));
-  };
+    setFormData((prev) => ({ ...prev, [id]: newValue }))
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+    e.preventDefault()
 
     if (!formData.termsAccepted) {
-      alert("Please accept the terms and conditions.");
-      return;
+      alert("Please accept the terms and conditions.")
+      return
     }
 
     try {
@@ -51,31 +46,26 @@ const SignUpForm = () => {
           password: formData.password,
           batch: Number(formData.batch),
           department: formData.department,
-          year: Number(formData.year),
-        }),
-      });
+          year: Number(formData.year)
+        })
+      })
 
-      if (!response.ok) alert("Registration failed!");
-      else router.push("/login");
+      if (!response.ok) alert("Registration failed!")
+      else router.push("/login")
     } catch (err) {
-      console.error(err);
-      alert("Something went wrong!");
+      console.error(err)
+      alert("Something went wrong!")
     }
-  };
+  }
   return (
     <div className="w-full max-w-md rounded-lg border border-gray-200 bg-white p-6 shadow-md dark:border-gray-700 dark:bg-gray-800">
       <form className="space-y-3">
-        <h5 className="text-xl font-medium text-gray-900 dark:text-white">
-          Create your account
-        </h5>
+        <h5 className="text-xl font-medium text-gray-900 dark:text-white">Create your account</h5>
 
         {/* First Name and Last Name */}
         <div className="grid gap-6 md:grid-cols-2">
           <div>
-            <label
-              htmlFor="firstName"
-              className="mb-1 block text-sm font-medium text-gray-900 dark:text-white"
-            >
+            <label htmlFor="firstName" className="mb-1 block text-sm font-medium text-gray-900 dark:text-white">
               First Name
             </label>
             <input
@@ -89,10 +79,7 @@ const SignUpForm = () => {
             />
           </div>
           <div>
-            <label
-              htmlFor="lastName"
-              className="mb-1 block text-sm font-medium text-gray-900 dark:text-white"
-            >
+            <label htmlFor="lastName" className="mb-1 block text-sm font-medium text-gray-900 dark:text-white">
               Last Name
             </label>
             <input
@@ -109,10 +96,7 @@ const SignUpForm = () => {
 
         {/* Email */}
         <div>
-          <label
-            htmlFor="email"
-            className="mb-1 block text-sm font-medium text-gray-900 dark:text-white"
-          >
+          <label htmlFor="email" className="mb-1 block text-sm font-medium text-gray-900 dark:text-white">
             Email
           </label>
           <input
@@ -128,10 +112,7 @@ const SignUpForm = () => {
 
         {/* Department Dropdown */}
         <div>
-          <label
-            htmlFor="department"
-            className="mb-1 block text-sm font-medium text-gray-900 dark:text-white"
-          >
+          <label htmlFor="department" className="mb-1 block text-sm font-medium text-gray-900 dark:text-white">
             Department
           </label>
           <select
@@ -153,10 +134,7 @@ const SignUpForm = () => {
         <div className="grid gap-6 md:grid-cols-2">
           {/* Year */}
           <div>
-            <label
-              htmlFor="batch"
-              className="mb-1 block text-sm font-medium text-gray-900 dark:text-white"
-            >
+            <label htmlFor="batch" className="mb-1 block text-sm font-medium text-gray-900 dark:text-white">
               Batch
             </label>
             <input
@@ -172,10 +150,7 @@ const SignUpForm = () => {
 
           {/* Year Dropdown */}
           <div>
-            <label
-              htmlFor="year"
-              className="mb-1 block text-sm font-medium text-gray-900 dark:text-white"
-            >
+            <label htmlFor="year" className="mb-1 block text-sm font-medium text-gray-900 dark:text-white">
               Year
             </label>
             <select
@@ -196,10 +171,7 @@ const SignUpForm = () => {
 
         {/* Password */}
         <div>
-          <label
-            htmlFor="password"
-            className="mb-1 block text-sm font-medium text-gray-900 dark:text-white"
-          >
+          <label htmlFor="password" className="mb-1 block text-sm font-medium text-gray-900 dark:text-white">
             Password
           </label>
           <input
@@ -225,15 +197,9 @@ const SignUpForm = () => {
               className="focus:ring-3 h-4 w-4 rounded border border-gray-300 bg-gray-50 focus:ring-blue-300 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800"
             />
           </div>
-          <label
-            htmlFor="termsAccepted"
-            className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
-          >
+          <label htmlFor="termsAccepted" className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">
             I agree with the{" "}
-            <a
-              href="#"
-              className="text-blue-600 hover:underline dark:text-blue-500"
-            >
+            <a href="#" className="text-blue-600 hover:underline dark:text-blue-500">
               terms and conditions
             </a>
             .
@@ -253,27 +219,20 @@ const SignUpForm = () => {
           type="button"
           className="flex w-full items-center justify-center rounded-lg border border-gray-300 bg-white px-5 py-2.5 text-sm font-medium text-gray-600 hover:bg-gray-100 focus:outline-none focus:ring-4 focus:ring-gray-200"
         >
-          <img
-            src="https://developers.google.com/identity/images/g-logo.png"
-            alt="Google Logo"
-            className="mr-2 h-5 w-5"
-          />
+          <img src="https://developers.google.com/identity/images/g-logo.png" alt="Google Logo" className="mr-2 h-5 w-5" />
           Sign up with Google
         </button>
 
         {/* Sign In Link */}
         <div className="text-sm font-medium text-gray-500 dark:text-gray-300">
           Already have an account?{" "}
-          <Link
-            className="text-blue-700 hover:underline dark:text-blue-500"
-            href="/login"
-          >
+          <Link className="text-blue-700 hover:underline dark:text-blue-500" href="/login">
             Sign-in
           </Link>
         </div>
       </form>
     </div>
-  );
-};
+  )
+}
 
-export default SignUpForm;
+export default SignUpForm
