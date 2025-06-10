@@ -30,7 +30,7 @@ const SignInForm = () => {
       });
 
       const result = await response.json();
-
+      console.log(result);
       if (!response.ok) {
         alert(result.message || "Login failed");
         return;

@@ -157,7 +157,7 @@ const SignUpForm = () => {
               htmlFor="batch"
               className="mb-1 block text-sm font-medium text-gray-900 dark:text-white"
             >
-              Year
+              Batch
             </label>
             <input
               type="text"
@@ -170,13 +170,13 @@ const SignUpForm = () => {
             />
           </div>
 
-          {/* Semester Dropdown */}
+          {/* Year Dropdown */}
           <div>
             <label
               htmlFor="year"
               className="mb-1 block text-sm font-medium text-gray-900 dark:text-white"
             >
-              Semester
+              Year
             </label>
             <select
               id="year"
@@ -188,6 +188,8 @@ const SignUpForm = () => {
               <option value="">Select Semester</option>
               <option value="1">1st</option>
               <option value="2">2nd</option>
+              <option value="3">3rd</option>
+              <option value="4">4th</option>
             </select>
           </div>
         </div>

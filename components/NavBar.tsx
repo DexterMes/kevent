@@ -64,14 +64,7 @@ const NavBar = () => {
       </div>
 
       <div className="flex h-full flex-row space-x-5">
-        {!user ? (
-          <Link
-            href="/login"
-            className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-800"
-          >
-            Sign In
-          </Link>
-        ) : (
+        {user && user.avatarURL ? (
           <Link
             href="/profile"
             className="aspect-square h-full overflow-hidden rounded-full border-2"
@@ -83,6 +76,13 @@ const NavBar = () => {
               height={40}
               className="cursor-pointer  rounded-full transition-transform"
             />
+          </Link>
+        ) : (
+          <Link
+            href="/login"
+            className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-800"
+          >
+            Sign In
           </Link>
         )}
         <DarkThemeToggle />
