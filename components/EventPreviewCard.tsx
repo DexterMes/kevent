@@ -23,8 +23,6 @@ const EventPreviewCard: React.FC<UserEventPreviewCardProps> = ({ event, handleCa
     minute: "2-digit"
   })
 
-  console.log(event.Price)
-
   return (
     <div
       onClick={handleCardClick}

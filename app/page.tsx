@@ -24,8 +24,16 @@ type Event = {
   userId: string
 }
 
+export type FilterState = {
+  time: string
+  department: string
+  price: number
+}
+
 export default function Home() {
   const [events, setEvents] = useState<Event[]>([])
+  const [filters, setFilters] = useState<FilterState>({ time: "all", department: "", price: 0 })
+
   const router = useRouter()
   const searchParams = useSearchParams()
   const query = searchParams.get("query")?.toLowerCase() || ""
@@ -49,7 +57,22 @@ export default function Home() {
     fetchEvents()
   }, [])
 
-  const filteredEvents = events
+  const filteredEvents = events.filter((event) => {
+    const now = new Date()
+    const eventDate = new Date(event.date)
+
+    const matchesTime =
+      filters.time === "all" ||
+      (filters.time === "day" && eventDate.toDateString() === now.toDateString()) ||
+      (filters.time === "week" && eventDate >= now && eventDate <= new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000)) ||
+      (filters.time === "month" && eventDate >= now && eventDate <= new Date(now.getTime() + 30 * 24 * 60 * 60 * 1000))
+
+    const matchesDepartment = filters.department === "" || event.department === filters.department
+    const matchesPrice = filters.price === 0 || parseFloat(event.Price) <= filters.price
+    return matchesTime && matchesDepartment && matchesPrice
+  })
+
+  const queriedEvents = filteredEvents
     .map((event) => {
       const titleMatch = event.Title.toLowerCase().includes(query)
       const descriptionMatch = event.Description.toLowerCase().includes(query)
@@ -59,6 +82,8 @@ export default function Home() {
     .filter((e) => e.rank < 3)
     .sort((a, b) => a.rank - b.rank)
 
+  console.log(filters)
+
   const handleCardClick = (event: any) => {
     router.push(`/event?query=${encodeURIComponent(event._id)}`)
   }
@@ -67,7 +92,7 @@ export default function Home() {
     <main>
       <NavBar />
       <div className="flex flex-row">
-        <Filter />
+        <Filter filters={filters} setFilters={setFilters} />
         <div className="p-10 dark:bg-gray-900">
           {query ? (
             <>
@@ -76,14 +101,14 @@ export default function Home() {
                 <div className="mb-6 mt-2 h-1 w-full max-w-xs bg-blue-500"></div>
               </h2>
               <div className="flex flex-wrap gap-10 ">
-                {filteredEvents.map((event, index) => (
+                {queriedEvents.map((event, index) => (
                   <EventPreviewCard key={index} handleCardClick={() => handleCardClick(event)} event={event} />
                 ))}
               </div>
             </>
           ) : (
             <div className="flex flex-wrap gap-10 ">
-              {events.map((event, index) => (
+              {filteredEvents.map((event, index) => (
                 <EventPreviewCard key={index} handleCardClick={() => handleCardClick(event)} event={event} />
               ))}
             </div>
