@@ -34,10 +34,8 @@ const CreateEventPage = ({ token }: { token: string }) => {
 
   const handleAdditionalFilesChange = (e: ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files || [])
-    const previews = files.map((file) => ({
-      url: URL.createObjectURL(file),
-      name: file.name
-    }))
+    const previews = files.map((file) => ({ url: URL.createObjectURL(file), name: file.name }))
+
     setAdditionalFiles([...additionalFiles, ...previews])
     setEventData({ ...eventData, otherImages: [...eventData.otherImages, ...files] })
   }
@@ -69,7 +67,6 @@ const CreateEventPage = ({ token }: { token: string }) => {
       })
 
       const data = await res.json()
-      console.log("Event created:", data)
     } catch (err) {
       console.error("Error:", err)
     }

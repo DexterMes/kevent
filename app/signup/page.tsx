@@ -1,5 +1,3 @@
-import { DarkThemeToggle } from "flowbite-react"
-
 import SignUpForm from "../../components/SignUpForm"
 
 export default function SignUp() {

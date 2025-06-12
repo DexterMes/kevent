@@ -5,7 +5,7 @@ import { useAuthContext } from "../contexts/AuthContext"
 const Sidebar = ({ setSelectedOption, selectedOption }: { setSelectedOption: (option: string) => void; selectedOption: string }) => {
   const { user } = useAuthContext()
   return (
-    <div id="sidebar" className="z-40 h-full w-64 bg-gray-100 dark:bg-gray-800 sm:translate-x-0" aria-label="Sidebar">
+    <div id="sidebar" className="z-40 h-full w-[15%] bg-gray-100 dark:bg-gray-800 sm:translate-x-0" aria-label="Sidebar">
       <div className="h-[calc(100vh-3.5rem)] overflow-y-auto px-3 py-4">
         {/* Profile Section */}
         <div className="mb-8 flex flex-col items-center">

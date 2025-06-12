@@ -8,17 +8,9 @@ type FilterProps = {
 }
 
 const Filter: React.FC<FilterProps> = ({ filters, setFilters }) => {
-  const handleTimeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFilters({ ...filters, time: e.target.value })
-  }
-
-  const handleDepartmentChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setFilters({ ...filters, department: e.target.value })
-  }
-
-  const handlePriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFilters({ ...filters, price: Number(e.target.value) })
-  }
+  const handleTimeChange = (e: React.ChangeEvent<HTMLInputElement>) => setFilters({ ...filters, time: e.target.value })
+  const handleDepartmentChange = (e: React.ChangeEvent<HTMLSelectElement>) => setFilters({ ...filters, department: e.target.value })
+  const handlePriceChange = (e: React.ChangeEvent<HTMLInputElement>) => setFilters({ ...filters, price: Number(e.target.value) })
 
   return (
     <div className="w-70 h-[100vh] min-w-64 bg-gray-100 p-4 dark:bg-gray-800">

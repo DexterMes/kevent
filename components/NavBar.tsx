@@ -38,7 +38,7 @@ const NavBar = () => {
     <nav className="flex h-14 w-full items-center justify-between border-b-1 border-gray-200 bg-white px-4 py-2 dark:border-gray-700 dark:bg-gray-900">
       <div className="flex flex-row space-x-10">
         <Link href="/" className="flex items-center space-x-3 rtl:space-x-reverse">
-          <img src="/icons/Logo.svg" className="h-8" alt="Flowbite Logo" />
+          <img src="/icons/Logo.svg" className="h-8" alt="Kevent Logo" />
           <span className="self-center whitespace-nowrap text-2xl font-semibold dark:text-white">Kevent</span>
         </Link>
         <div className="relative mx-4 w-full max-w-md px-4 md:block">

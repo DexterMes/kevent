@@ -98,7 +98,7 @@ const EditProfile: React.FC = () => {
   }
 
   return (
-    <div className="mx-auto max-w-2xl p-6">
+    <div className="w-full px-60">
       <div className="mb-6 flex flex-col items-center">
         <div className="relative">
           <div className="h-32 w-32 overflow-hidden rounded-full border border-gray-300 bg-gray-100 dark:border-gray-600 dark:bg-gray-700">

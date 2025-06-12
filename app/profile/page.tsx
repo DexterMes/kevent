@@ -28,11 +28,27 @@ interface Ticket {
 export default function Profile() {
   const [selectedOption, setSelectedOption] = useState("profile")
   const [tickets, setTickets] = useState<Ticket[]>([])
+  const [events, setEvents] = useState<Event[]>([])
   const [history, setHistory] = useState<Ticket[]>([])
 
   const { token, user, loading } = useAuthContext()
 
   const router = useRouter()
+
+  const fetchEvents = async () => {
+    try {
+      const res = await fetch("http://localhost:5000/users/viewevents", {
+        headers: { Authorization: `Bearer ${token}` }
+      })
+
+      const data = await res.json()
+
+      if (data.events && data.events.length) setEvents([...data.events])
+      if (!data.events || !data.events.length) setEvents([])
+    } catch (err) {
+      console.error("Error fetching tickets:", err)
+    }
+  }
 
   useEffect(() => {
     if (!loading && (!user || !token)) router.push("/login")
@@ -63,6 +79,7 @@ export default function Profile() {
       }
     }
 
+    if (token) fetchEvents()
     if (token) fetchTickets()
   }, [user, token, router])
 
@@ -79,15 +96,16 @@ export default function Profile() {
   return (
     <main>
       <NavBar />
-      <div className="flex flex-row">
+      <div className="flex h-full w-full flex-row">
         {/* Sidebar */}
         <Sidebar setSelectedOption={setSelectedOption} selectedOption={selectedOption} />
 
         {/* Main Content */}
-        <div className="flex h-[calc(100vh-3.5rem)] w-full bg-white dark:bg-gray-900">
+        <div className="flex w-[85%] flex-col gap-5 bg-white p-10 dark:bg-gray-900">
           {selectedOption === "profile" && <EditProfile />}
           {selectedOption === "tickets" && tickets.map((ticket) => <UserEventCard key={ticket._id} event={ticket.eventId} variant="event" />)}
-          {/* {selectedOption === "events" && <UserEventCard variant="edit" />} */}
+          {selectedOption === "events" &&
+            events.map((event) => <UserEventCard key={event._id} event={event} token={token!} onDelete={fetchEvents} variant="edit" />)}
           {selectedOption === "history" && history.map((ticket) => <UserEventCard key={ticket._id} event={ticket.eventId} variant="history" />)}
         </div>
       </div>

@@ -58,9 +58,9 @@ const SignUpForm = () => {
     }
   }
   return (
-    <div className="w-full max-w-md rounded-lg border border-gray-200 bg-white p-6 shadow-md dark:border-gray-700 dark:bg-gray-800">
-      <form className="space-y-3">
-        <h5 className="text-xl font-medium text-gray-900 dark:text-white">Create your account</h5>
+    <div className="w-full max-w-lg rounded-lg border border-gray-200 bg-white p-6 shadow-md dark:border-gray-700 dark:bg-gray-800">
+      <form className="flex flex-col space-y-4">
+        <h5 className="self-center text-2xl font-medium text-gray-900 dark:text-white">Create your account</h5>
 
         {/* First Name and Last Name */}
         <div className="grid gap-6 md:grid-cols-2">
@@ -224,7 +224,7 @@ const SignUpForm = () => {
         </button>
 
         {/* Sign In Link */}
-        <div className="text-sm font-medium text-gray-500 dark:text-gray-300">
+        <div className="self-center text-sm font-medium text-gray-500 dark:text-gray-300">
           Already have an account?{" "}
           <Link className="text-blue-700 hover:underline dark:text-blue-500" href="/login">
             Sign-in

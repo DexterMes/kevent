@@ -9,7 +9,7 @@ const Footer: React.FC = () => {
           {/* Logo Section */}
           <div className="mb-6 md:mb-0">
             <a href="https://flowbite.com/" className="flex items-center">
-              <img src="/icons/Logo.svg" className="me-3 h-8" alt="FlowBite Logo" />
+              <img src="/icons/Logo.svg" className="me-3 h-8" alt="Kevent Logo" />
               <span className="self-center whitespace-nowrap text-2xl font-semibold dark:text-white">Kevent</span>
             </a>
           </div>
@@ -38,7 +38,7 @@ const Footer: React.FC = () => {
               <h2 className="mb-4 text-sm font-semibold uppercase text-gray-900 dark:text-white">Follow us</h2>
               <ul className="font-medium text-gray-500 dark:text-gray-400">
                 <li className="mb-2">
-                  <a href="https://github.com/themesberg/flowbite" className="hover:underline">
+                  <a href="https://github.com/dextermes" className="hover:underline">
                     Github
                   </a>
                 </li>
@@ -77,8 +77,8 @@ const Footer: React.FC = () => {
           {/* Copyright */}
           <span className="text-sm text-gray-500 dark:text-gray-400 sm:text-center">
             © 2023{" "}
-            <a href="https://flowbite.com/" className="hover:underline">
-              Flowbite™
+            <a href="https://kabinbhandari.com.np/" className="hover:underline">
+              Kabin Bhandari™
             </a>
             . All Rights Reserved.
           </span>
