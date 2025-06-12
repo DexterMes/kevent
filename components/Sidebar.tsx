@@ -5,7 +5,7 @@ import { useAuthContext } from "../contexts/AuthContext"
 const Sidebar = ({ setSelectedOption, selectedOption }: { setSelectedOption: (option: string) => void; selectedOption: string }) => {
   const { user } = useAuthContext()
   return (
-    <aside id="sidebar" className="z-40 h-full w-64 bg-gray-50 dark:bg-gray-800 sm:translate-x-0" aria-label="Sidebar">
+    <div id="sidebar" className="z-40 h-full w-64 bg-gray-100 dark:bg-gray-800 sm:translate-x-0" aria-label="Sidebar">
       <div className="h-[calc(100vh-3.5rem)] overflow-y-auto px-3 py-4">
         {/* Profile Section */}
         <div className="mb-8 flex flex-col items-center">
@@ -19,11 +19,12 @@ const Sidebar = ({ setSelectedOption, selectedOption }: { setSelectedOption: (op
             <button
               onClick={() => setSelectedOption("profile")}
               className={`group flex w-full items-center rounded-lg p-2 ${
-                selectedOption === "profile" ? "bg-gray-100 dark:bg-gray-700" : "hover:bg-gray-100 dark:hover:bg-gray-700"
+                selectedOption === "profile" ? "bg-gray-300 dark:bg-gray-600" : "hover:bg-gray-200 dark:hover:bg-gray-700"
               } text-gray-900 dark:text-white`}
             >
               <svg
-                className="h-5 w-5 text-gray-500 transition duration-75 group-hover:text-gray-900 dark:text-gray-400 dark:group-hover:text-white"
+                className={`h-5 w-5  text-gray-500 transition duration-75 group-hover:text-gray-900 dark:text-gray-400 dark:group-hover:text-white
+                  ${selectedOption === "profile" && "text-gray-900 dark:text-white"}`}
                 xmlns="http://www.w3.org/2000/svg"
                 fill="currentColor"
                 viewBox="0 0 20 20"
@@ -38,11 +39,12 @@ const Sidebar = ({ setSelectedOption, selectedOption }: { setSelectedOption: (op
             <button
               onClick={() => setSelectedOption("tickets")}
               className={`group flex w-full items-center rounded-lg p-2 ${
-                selectedOption === "tickets" ? "bg-gray-100 dark:bg-gray-700" : "hover:bg-gray-100 dark:hover:bg-gray-700"
+                selectedOption === "tickets" ? "bg-gray-300 dark:bg-gray-600" : "hover:bg-gray-200 dark:hover:bg-gray-700"
               } text-gray-900 dark:text-white`}
             >
               <svg
-                className="h-5 w-5 text-gray-500 transition duration-75 group-hover:text-gray-900 dark:text-gray-400 dark:group-hover:text-white"
+                className={`h-5 w-5  text-gray-500 transition duration-75 group-hover:text-gray-900 dark:text-gray-400 dark:group-hover:text-white
+                  ${selectedOption === "tickets" && "text-gray-900 dark:text-white"}`}
                 xmlns="http://www.w3.org/2000/svg"
                 fill="currentColor"
                 viewBox="0 0 20 20"
@@ -57,11 +59,12 @@ const Sidebar = ({ setSelectedOption, selectedOption }: { setSelectedOption: (op
             <button
               onClick={() => setSelectedOption("events")}
               className={`group flex w-full items-center rounded-lg p-2 ${
-                selectedOption === "events" ? "bg-gray-100 dark:bg-gray-700" : "hover:bg-gray-100 dark:hover:bg-gray-700"
+                selectedOption === "events" ? "bg-gray-300 dark:bg-gray-600" : "hover:bg-gray-200 dark:hover:bg-gray-700"
               } text-gray-900 dark:text-white`}
             >
               <svg
-                className="h-5 w-5 text-gray-500 transition duration-75 group-hover:text-gray-900 dark:text-gray-400 dark:group-hover:text-white"
+                className={`h-5 w-5  text-gray-500 transition duration-75 group-hover:text-gray-900 dark:text-gray-400 dark:group-hover:text-white
+                  ${selectedOption === "events" && "text-gray-900 dark:text-white"}`}
                 xmlns="http://www.w3.org/2000/svg"
                 fill="currentColor"
                 viewBox="0 0 20 20"
@@ -76,11 +79,12 @@ const Sidebar = ({ setSelectedOption, selectedOption }: { setSelectedOption: (op
             <button
               onClick={() => setSelectedOption("history")}
               className={`group flex w-full items-center rounded-lg p-2 ${
-                selectedOption === "history" ? "bg-gray-100 dark:bg-gray-700" : "hover:bg-gray-100 dark:hover:bg-gray-700"
+                selectedOption === "history" ? "bg-gray-300 dark:bg-gray-600" : "hover:bg-gray-200 dark:hover:bg-gray-700"
               } text-gray-900 dark:text-white`}
             >
               <svg
-                className="h-5 w-5 text-gray-500 transition duration-75 group-hover:text-gray-900 dark:text-gray-400 dark:group-hover:text-white"
+                className={`h-5 w-5  text-gray-500 transition duration-75 group-hover:text-gray-900 dark:text-gray-400 dark:group-hover:text-white
+                  ${selectedOption === "history" && "text-gray-900 dark:text-white"}`}
                 xmlns="http://www.w3.org/2000/svg"
                 fill="currentColor"
                 viewBox="0 0 20 20"
@@ -92,7 +96,7 @@ const Sidebar = ({ setSelectedOption, selectedOption }: { setSelectedOption: (op
           </li>
         </ul>
       </div>
-    </aside>
+    </div>
   )
 }
 

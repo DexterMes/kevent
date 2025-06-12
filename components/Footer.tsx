@@ -9,7 +9,7 @@ const Footer: React.FC = () => {
           {/* Logo Section */}
           <div className="mb-6 md:mb-0">
             <a href="https://flowbite.com/" className="flex items-center">
-              <img src="icons/Logo.svg" className="me-3 h-8" alt="FlowBite Logo" />
+              <img src="/icons/Logo.svg" className="me-3 h-8" alt="FlowBite Logo" />
               <span className="self-center whitespace-nowrap text-2xl font-semibold dark:text-white">Kevent</span>
             </a>
           </div>

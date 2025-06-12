@@ -10,7 +10,7 @@ const inter = Inter({ subsets: ["latin"] })
 export const metadata: Metadata = {
   title: "Kevent",
   description: "Event Management For Kathmandu University",
-  icons: { icon: "icons/Logo.svg" }
+  icons: { icon: "/icons/Logo.svg" }
 }
 
 export default function RootLayout({

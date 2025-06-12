@@ -1,6 +1,6 @@
 "use client"
 
-import { DarkThemeToggle } from "flowbite-react/components/DarkThemeToggle"
+import { SquarePlus, SunMoon } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
@@ -38,7 +38,7 @@ const NavBar = () => {
     <nav className="flex h-14 w-full items-center justify-between border-b-1 border-gray-200 bg-white px-4 py-2 dark:border-gray-700 dark:bg-gray-900">
       <div className="flex flex-row space-x-10">
         <Link href="/" className="flex items-center space-x-3 rtl:space-x-reverse">
-          <img src="icons/Logo.svg" className="h-8" alt="Flowbite Logo" />
+          <img src="/icons/Logo.svg" className="h-8" alt="Flowbite Logo" />
           <span className="self-center whitespace-nowrap text-2xl font-semibold dark:text-white">Kevent</span>
         </Link>
         <div className="relative mx-4 w-full max-w-md px-4 md:block">
@@ -70,11 +70,19 @@ const NavBar = () => {
         </div>
       </div>
 
-      <div className="flex h-full flex-row space-x-5">
+      <div className="flex h-full flex-row space-x-7">
+        <Link href="/event/create">
+          <SquarePlus className="h-10 w-10 text-gray-700 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-300" strokeWidth={1.5} />
+        </Link>
         {user && user.avatarURL ? (
-          <Link href="/profile" className="aspect-square h-full overflow-hidden rounded-full border-2">
-            <Image src={user.avatarURL} alt="Profile Avatar" width={40} height={40} className="cursor-pointer  rounded-full transition-transform" />
-          </Link>
+          <>
+            <Link
+              href="/profile"
+              className="aspect-square h-full overflow-hidden rounded-full border-[1.5px] border-gray-700 hover:border-gray-900 dark:border-gray-400 dark:hover:border-gray-300"
+            >
+              <Image src={user.avatarURL} alt="Profile Avatar" width={40} height={40} className="cursor-pointer  rounded-full transition-transform" />
+            </Link>
+          </>
         ) : (
           <Link
             href="/login"
@@ -83,7 +91,11 @@ const NavBar = () => {
             Sign In
           </Link>
         )}
-        <DarkThemeToggle onClick={toggleTheme} />
+        <SunMoon
+          className="h-full text-gray-700 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-300"
+          strokeWidth={1.75}
+          onClick={toggleTheme}
+        />
       </div>
     </nav>
   )

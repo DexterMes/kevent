@@ -5,6 +5,7 @@ import React, { createContext, useContext, useEffect, useState } from "react"
 interface AuthContextType {
   token: string | null
   user: any | null
+  loading: boolean
   setToken: (token: string | null) => void
   setUser: (user: any | null) => void
   logout: () => void
@@ -15,13 +16,14 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined)
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [token, setTokenState] = useState<string | null>(null)
   const [user, setUser] = useState<any | null>(null)
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     const storedToken = localStorage.getItem("authToken")
     if (storedToken) {
       setTokenState(storedToken)
-      if (!user) fetchUserProfile(storedToken)
-    }
+      fetchUserProfile(storedToken)
+    } else setLoading(false)
   }, [])
 
   const setToken = (newToken: string | null) => {
@@ -45,6 +47,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     } catch (err) {
       console.error("Invalid token or user fetch failed")
       logout()
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -53,7 +57,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     setUser(null)
   }
 
-  return <AuthContext.Provider value={{ token, user, setToken, setUser, logout }}>{children}</AuthContext.Provider>
+  return <AuthContext.Provider value={{ token, user, loading, setToken, setUser, logout }}>{children}</AuthContext.Provider>
 }
 
 export const useAuthContext = () => {
