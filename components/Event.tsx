@@ -4,6 +4,8 @@ import { useSearchParams } from "next/navigation"
 import React, { useEffect, useState } from "react"
 import { IoMdDownload } from "react-icons/io"
 
+import { useAuthContext } from "../contexts/AuthContext"
+
 const EventDetails: React.FC = () => {
   const [event, setEvent] = useState<any>(null)
   const [numTickets, setNumTickets] = useState(1)
@@ -13,6 +15,22 @@ const EventDetails: React.FC = () => {
 
   const pricePerTicket = event?.Price ? parseInt(event.Price) : 0
   const totalPrice = numTickets * pricePerTicket
+
+  const { token } = useAuthContext()
+
+  async function createBooking() {
+    try {
+      const res = await fetch(`http://localhost:5000/tickets/booktickets/${event._id}`, {
+        method: "POST",
+        body: JSON.stringify({ ticket: numTickets }),
+        headers: { Authorization: `Bearer ${token}` }
+      })
+      const data = await res.json()
+      console.log(data)
+    } catch (err) {
+      console.error("Error booking tickets:", err)
+    }
+  }
 
   useEffect(() => {
     const fetchEvent = async () => {
@@ -25,29 +43,16 @@ const EventDetails: React.FC = () => {
     fetchEvent()
   }, [])
 
-  if (!event) {
-    return <div className="p-12 text-white">Loading...</div>
-  }
+  if (!event) return <div className="p-12 text-white">Loading...</div>
 
   const eventDate = new Date(event.date)
-  const formattedDate = eventDate.toLocaleDateString("en-US", {
-    year: "numeric",
-    month: "long",
-    day: "numeric"
-  })
-  const formattedTime = eventDate.toLocaleTimeString("en-US", {
-    hour: "numeric",
-    minute: "2-digit"
-  })
+  const formattedDate = eventDate.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })
+  const formattedTime = eventDate.toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit" })
 
   const additionalFiles = event.Files.map((url: string) => {
     const name = url.split("/").pop() || "file"
     const ext = name.split(".").pop()
-    return {
-      url,
-      name,
-      type: ext === "pdf" ? "pdf" : "image"
-    }
+    return { url, name, type: ext === "pdf" ? "pdf" : "image" }
   })
 
   return (
@@ -120,7 +125,7 @@ const EventDetails: React.FC = () => {
               </p>
             </div>
             <button
-              onClick={() => alert(`You have booked ${numTickets} tickets for Rs. ${totalPrice}`)}
+              onClick={createBooking}
               className="mt-4 w-full rounded-lg bg-blue-700 px-4 py-2 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
             >
               Book

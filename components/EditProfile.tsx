@@ -10,7 +10,6 @@ const EditProfile: React.FC = () => {
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
-    email: "",
     department: "",
     year: "",
     batch: ""
@@ -22,12 +21,11 @@ const EditProfile: React.FC = () => {
 
   useEffect(() => {
     if (user) {
-      const { firstName = "", lastName = "", email = "", department = "", year = "", batch = "", avatarURL = "" } = user
+      const { firstName = "", lastName = "", department = "", year = "", batch = "", avatarURL = "" } = user
 
       const filled = {
         firstName,
         lastName,
-        email,
         department,
         year,
         batch
@@ -156,9 +154,8 @@ const EditProfile: React.FC = () => {
           <input
             type="email"
             id="email"
-            value={formData.email}
-            onChange={handleChange}
-            required
+            value={user.email}
+            readOnly
             className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm dark:bg-gray-700 dark:text-white"
           />
         </div>

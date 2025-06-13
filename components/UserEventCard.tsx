@@ -21,6 +21,24 @@ const UserEventCard: React.FC<UserEventCardProps> = ({ event, variant, token, on
   const formattedDate = dateObj.toLocaleDateString(undefined, { year: "numeric", month: "long", day: "numeric" })
   const formattedTime = dateObj.toLocaleTimeString(undefined, { hour: "2-digit", minute: "2-digit" })
 
+  const getTimeRemaining = () => {
+    const now = new Date().getTime()
+    const eventTime = dateObj.getTime()
+    const diff = eventTime - now
+
+    if (diff <= 0) return "Started"
+
+    const seconds = Math.floor(diff / 1000)
+    const minutes = Math.floor(seconds / 60)
+    const hours = Math.floor(minutes / 60)
+    const days = Math.floor(hours / 24)
+
+    const remainingHours = hours % 24
+    const remainingMinutes = minutes % 60
+
+    return `${days}d ${remainingHours}h`
+  }
+
   async function deleteEvent() {
     try {
       const res = await fetch(`http://localhost:5000/events/deleteevent/${event._id}`, {
@@ -60,7 +78,7 @@ const UserEventCard: React.FC<UserEventCardProps> = ({ event, variant, token, on
           </button>
         )}
 
-        {variant === "event" && <div className="w-20 text-gray-700 dark:text-gray-300">1d 2hr</div>}
+        {variant === "event" && <div className="w-20 text-gray-700 dark:text-gray-300">{getTimeRemaining()}</div>}
       </div>
     </div>
   )

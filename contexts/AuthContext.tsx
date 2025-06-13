@@ -23,18 +23,25 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     if (storedToken) {
       setTokenState(storedToken)
       fetchUserProfile(storedToken)
-    } else setLoading(false)
+    } else {
+      setLoading(false)
+    }
   }, [])
 
   const setToken = (newToken: string | null) => {
     if (newToken) {
       localStorage.setItem("authToken", newToken)
       setTokenState(newToken)
-      fetchUserProfile(newToken)
     } else {
       localStorage.removeItem("authToken")
-      logout()
+      setTokenState(null)
     }
+  }
+
+  const logout = () => {
+    setToken(null)
+    setUser(null)
+    setLoading(false)
   }
 
   const fetchUserProfile = async (token: string) => {
@@ -42,6 +49,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       const res = await fetch("http://localhost:5000/users/profile", {
         headers: { Authorization: `Bearer ${token}` }
       })
+      if (!res.ok) throw new Error("Failed to fetch user")
       const userData = await res.json()
       setUser(userData.user)
     } catch (err) {
@@ -52,17 +60,11 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
   }
 
-  const logout = () => {
-    setToken(null)
-    setUser(null)
-  }
-
   return <AuthContext.Provider value={{ token, user, loading, setToken, setUser, logout }}>{children}</AuthContext.Provider>
 }
 
 export const useAuthContext = () => {
   const context = useContext(AuthContext)
   if (!context) throw new Error("useAuthContext must be used within AuthProvider")
-
   return context
 }
