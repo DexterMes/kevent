@@ -21,14 +21,15 @@ const EditProfile: React.FC = () => {
 
   useEffect(() => {
     if (user) {
-      const { firstName = "", lastName = "", department = "", year = "", batch = "", avatarURL = "" } = user
+      console.log(user)
+      const { avatarURL = "" } = user
 
       const filled = {
-        firstName,
-        lastName,
-        department,
-        year,
-        batch
+        firstName: user.firstName ? user.firstName : "",
+        lastName: user.lastName ? user.lastName : "",
+        department: user.department ? user.department : "",
+        year: user.year ? user.year : "",
+        batch: user.batch ? user.batch : ""
       }
       setFormData(filled)
       setInitialData(filled)

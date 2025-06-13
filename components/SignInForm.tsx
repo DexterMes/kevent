@@ -2,19 +2,23 @@
 
 import Link from "next/link"
 import { useRouter } from "next/navigation"
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 
 import { useAuthContext } from "../contexts/AuthContext"
 
 const SignInForm = () => {
   const router = useRouter()
-  const { setToken, setUser } = useAuthContext()
+  const { setToken } = useAuthContext()
 
   const [formData, setFormData] = useState({ email: "", password: "" })
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = e.target
     setFormData((prev) => ({ ...prev, [id]: value }))
+  }
+
+  const handleGoogleAuth = () => {
+    window.open("http://localhost:5000/auth/google", "_blank", "width=500,height=600")
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -44,6 +48,54 @@ const SignInForm = () => {
       alert("Something went wrong!")
     }
   }
+
+  useEffect(() => {
+    const handleMessage = async (event: MessageEvent) => {
+      console.log("Message received:", event.data) // <=== Add this console log
+      console.log("Message received:", event.origin) // <=== Add this console log
+      if (event.origin !== "https://kevent-server.onrender.com") return
+
+      const { access_token } = event.data
+      if (!access_token) return
+
+      try {
+        // 1. Try login first
+        let response = await fetch("http://localhost:5000/auth/login", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ access_token })
+        })
+
+        let result = await response.json()
+
+        // 2. If user not found → signup
+        // if (response.status === 404) {
+        //   response = await fetch("http://localhost:5000/auth/signup", {
+        //     method: "POST",
+        //     headers: { "Content-Type": "application/json" },
+        //     body: JSON.stringify({ access_token })
+        //   })
+        //   result = await response.json()
+        // }
+
+        if (!response.ok) {
+          alert(result.message || "Google login failed")
+          return
+        }
+
+        console.log("this is the reusel" + result.token)
+
+        setToken(result.token)
+        router.push("/")
+      } catch (err) {
+        console.error("Google login error:", err)
+        alert("Google login failed")
+      }
+    }
+
+    window.addEventListener("message", handleMessage)
+    return () => window.removeEventListener("message", handleMessage)
+  }, [router, setToken])
 
   return (
     <div className="w-full max-w-sm rounded-lg border border-gray-200 bg-white p-4 shadow dark:border-gray-700 dark:bg-gray-800 sm:p-6 md:p-8">
@@ -89,6 +141,7 @@ const SignInForm = () => {
           </button>
           <button
             type="button"
+            onClick={handleGoogleAuth}
             className="flex w-full items-center justify-center rounded-lg border border-gray-300 bg-white px-5 py-2.5 text-sm font-medium text-gray-600 hover:bg-gray-100 focus:outline-none focus:ring-4 focus:ring-gray-200"
           >
             <img src="https://developers.google.com/identity/images/g-logo.png" alt="Google Logo" className="mr-2 h-5 w-5" />

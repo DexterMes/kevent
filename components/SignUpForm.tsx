@@ -2,10 +2,13 @@
 
 import Link from "next/link"
 import { useRouter } from "next/navigation"
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
+
+import { useAuthContext } from "../contexts/AuthContext"
 
 const SignUpForm = () => {
   const router = useRouter()
+  const { setToken } = useAuthContext()
 
   const [formData, setFormData] = useState({
     firstName: "",
@@ -21,10 +24,12 @@ const SignUpForm = () => {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { id, value, type } = e.target
-
     const newValue = type === "checkbox" && e.target instanceof HTMLInputElement ? e.target.checked : value
-
     setFormData((prev) => ({ ...prev, [id]: newValue }))
+  }
+
+  const handleGoogleAuth = () => {
+    window.open("http://localhost:5000/auth/google", "_blank", "width=500,height=600")
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -57,6 +62,52 @@ const SignUpForm = () => {
       alert("Something went wrong!")
     }
   }
+
+  useEffect(() => {
+    const handleMessage = async (event: MessageEvent) => {
+      console.log("Message received:", event.data) // <=== Add this console log
+      console.log("Message received:", event.origin) // <=== Add this console log
+      if (event.origin !== "https://kevent-server.onrender.com") return
+
+      const { access_token } = event.data
+      if (!access_token) return
+
+      try {
+        // 1. Try login first
+        // let response = await fetch("http://localhost:5000/auth/login", {
+        //   method: "POST",
+        //   headers: { "Content-Type": "application/json" },
+        //   body: JSON.stringify({ access_token })
+        // })
+
+        // let result = await response.json()
+
+        let response = await fetch("http://localhost:5000/auth/signup", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ access_token })
+        })
+        let result = await response.json()
+
+        if (!response.ok) {
+          alert(result.message || "Google signup failed")
+          return
+        }
+
+        console.log("this is the reusel" + result.token)
+
+        setToken(result.token)
+        router.push("/")
+      } catch (err) {
+        console.error("Google login error:", err)
+        alert("Google login failed")
+      }
+    }
+
+    window.addEventListener("message", handleMessage)
+    return () => window.removeEventListener("message", handleMessage)
+  }, [router, setToken])
+
   return (
     <div className="w-full max-w-lg rounded-lg border border-gray-200 bg-white p-6 shadow-md dark:border-gray-700 dark:bg-gray-800">
       <form className="flex flex-col space-y-4">
@@ -217,6 +268,7 @@ const SignUpForm = () => {
 
         <button
           type="button"
+          onClick={handleGoogleAuth}
           className="flex w-full items-center justify-center rounded-lg border border-gray-300 bg-white px-5 py-2.5 text-sm font-medium text-gray-600 hover:bg-gray-100 focus:outline-none focus:ring-4 focus:ring-gray-200"
         >
           <img src="https://developers.google.com/identity/images/g-logo.png" alt="Google Logo" className="mr-2 h-5 w-5" />

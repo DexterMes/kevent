@@ -32,9 +32,11 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     if (newToken) {
       localStorage.setItem("authToken", newToken)
       setTokenState(newToken)
+      fetchUserProfile(newToken)
     } else {
       localStorage.removeItem("authToken")
       setTokenState(null)
+      setUser(null)
     }
   }
 
