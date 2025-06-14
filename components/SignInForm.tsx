@@ -1,5 +1,6 @@
 "use client"
 
+import Image from "next/image"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import React, { useEffect, useState } from "react"
@@ -35,7 +36,6 @@ const SignInForm = () => {
       })
 
       const result = await response.json()
-      console.log(result)
       if (!response.ok) {
         alert(result.message || "Login failed")
         return
@@ -51,41 +51,26 @@ const SignInForm = () => {
 
   useEffect(() => {
     const handleMessage = async (event: MessageEvent) => {
-      console.log("Message received:", event.data) // <=== Add this console log
-      console.log("Message received:", event.origin) // <=== Add this console log
       if (event.origin !== "https://kevent-server.onrender.com") return
 
       const { access_token } = event.data
       if (!access_token) return
 
       try {
-        // 1. Try login first
-        let response = await fetch("http://localhost:5000/auth/login", {
+        const response = await fetch("http://localhost:5000/auth/login", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ access_token })
         })
 
-        let result = await response.json()
-
-        // 2. If user not found → signup
-        // if (response.status === 404) {
-        //   response = await fetch("http://localhost:5000/auth/signup", {
-        //     method: "POST",
-        //     headers: { "Content-Type": "application/json" },
-        //     body: JSON.stringify({ access_token })
-        //   })
-        //   result = await response.json()
-        // }
+        const data = await response.json()
 
         if (!response.ok) {
-          alert(result.message || "Google login failed")
+          alert(data.message || "Google login failed")
           return
         }
 
-        console.log("this is the reusel" + result.token)
-
-        setToken(result.token)
+        setToken(data.token)
         router.push("/")
       } catch (err) {
         console.error("Google login error:", err)
@@ -98,7 +83,7 @@ const SignInForm = () => {
   }, [router, setToken])
 
   return (
-    <div className="w-full max-w-sm rounded-lg border border-gray-200 bg-white p-4 shadow dark:border-gray-700 dark:bg-gray-800 sm:p-6 md:p-8">
+    <div className="w-full max-w-sm rounded-lg border border-gray-200 bg-white p-4 shadow sm:p-6 md:p-8 dark:border-gray-700 dark:bg-gray-800">
       <form className="flex flex-col space-y-5" onSubmit={handleSubmit}>
         <h5 className="self-center text-2xl font-semibold text-gray-900 dark:text-white">Welcome to Kevent</h5>
         <div>
@@ -135,16 +120,16 @@ const SignInForm = () => {
         <div className="space-y-2">
           <button
             type="submit"
-            className="w-full rounded-lg bg-blue-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+            className="w-full rounded-lg bg-blue-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 focus:outline-none dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
           >
             Login to your account
           </button>
           <button
             type="button"
             onClick={handleGoogleAuth}
-            className="flex w-full items-center justify-center rounded-lg border border-gray-300 bg-white px-5 py-2.5 text-sm font-medium text-gray-600 hover:bg-gray-100 focus:outline-none focus:ring-4 focus:ring-gray-200"
+            className="flex w-full items-center justify-center rounded-lg border border-gray-300 bg-white px-5 py-2.5 text-sm font-medium text-gray-600 hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 focus:outline-none"
           >
-            <img src="https://developers.google.com/identity/images/g-logo.png" alt="Google Logo" className="mr-2 h-5 w-5" />
+            <Image src="https://developers.google.com/identity/images/g-logo.png" alt="Google Logo" width={20} height={20} className="mr-2 h-5 w-5" />
             Sign in with Google
           </button>
         </div>

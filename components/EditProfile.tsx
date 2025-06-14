@@ -1,8 +1,9 @@
 "use client"
 
+import Image from "next/image"
 import React, { useEffect, useState } from "react"
 
-import { useAuthContext } from "../contexts/AuthContext" // update the path as needed
+import { useAuthContext, User } from "../contexts/AuthContext" // update the path as needed
 
 const EditProfile: React.FC = () => {
   const { user, token, setUser } = useAuthContext()
@@ -21,15 +22,14 @@ const EditProfile: React.FC = () => {
 
   useEffect(() => {
     if (user) {
-      console.log(user)
       const { avatarURL = "" } = user
 
       const filled = {
         firstName: user.firstName ? user.firstName : "",
         lastName: user.lastName ? user.lastName : "",
         department: user.department ? user.department : "",
-        year: user.year ? user.year : "",
-        batch: user.batch ? user.batch : ""
+        year: user.year ? user.year.toString() : "",
+        batch: user.batch ? user.batch.toString() : ""
       }
       setFormData(filled)
       setInitialData(filled)
@@ -61,7 +61,7 @@ const EditProfile: React.FC = () => {
 
         if (!res.ok) throw new Error("Upload failed")
         const updated = await res.json()
-        setUser((prev: any) => ({ ...prev, avatarURL: updated.avatarURL }))
+        setUser((prev: User) => ({ ...prev, avatarURL: updated.avatarURL }))
         setProfileImage(updated.avatarURL)
       } catch (err) {
         console.error(err)
@@ -102,14 +102,16 @@ const EditProfile: React.FC = () => {
         <div className="relative">
           <div className="h-32 w-32 overflow-hidden rounded-full border border-gray-300 bg-gray-100 dark:border-gray-600 dark:bg-gray-700">
             {profileImage ? (
-              <img src={profileImage} alt="Profile" className="h-full w-full object-cover" />
+              <div className="relative h-full w-full">
+                <Image src={profileImage} alt="Profile" fill className="object-cover" sizes="100vw" />
+              </div>
             ) : (
               <div className="flex h-full items-center justify-center text-gray-400">No Image</div>
             )}
           </div>
           <label
             htmlFor="profileImage"
-            className="absolute bottom-0 right-3 h-7 w-7 cursor-pointer rounded-full bg-blue-600 text-center text-2xl leading-none text-white hover:bg-blue-700"
+            className="absolute right-3 bottom-0 h-7 w-7 cursor-pointer rounded-full bg-blue-600 text-center text-2xl leading-none text-white hover:bg-blue-700"
           >
             +
           </label>
@@ -155,7 +157,7 @@ const EditProfile: React.FC = () => {
           <input
             type="email"
             id="email"
-            value={user.email}
+            value={user?.email}
             readOnly
             className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm dark:bg-gray-700 dark:text-white"
           />
@@ -229,8 +231,7 @@ const EditProfile: React.FC = () => {
         <button
           type="submit"
           disabled={!isChanged}
-          className={`mt-6 w-full rounded-lg px-5 py-2.5 font-medium text-white focus:outline-none focus:ring-4 
-            ${isChanged ? "bg-blue-600 hover:bg-blue-700 focus:ring-blue-500" : "cursor-not-allowed bg-gray-400"}`}
+          className={`mt-6 w-full rounded-lg px-5 py-2.5 font-medium text-white focus:ring-4 focus:outline-none ${isChanged ? "bg-blue-600 hover:bg-blue-700 focus:ring-blue-500" : "cursor-not-allowed bg-gray-400"}`}
         >
           Save Changes
         </button>

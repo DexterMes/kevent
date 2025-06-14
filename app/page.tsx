@@ -8,7 +8,7 @@ import Filter from "../components/Filters"
 import Footer from "../components/Footer"
 import NavBar from "../components/NavBar"
 
-type Event = {
+export interface Event {
   _id: string
   Title: string
   Description: string
@@ -82,9 +82,7 @@ export default function Home() {
     .filter((e) => e.rank < 3)
     .sort((a, b) => a.rank - b.rank)
 
-  console.log(filters)
-
-  const handleCardClick = (event: any) => {
+  const handleCardClick = (event: Event) => {
     router.push(`/event?query=${encodeURIComponent(event._id)}`)
   }
 
@@ -93,21 +91,21 @@ export default function Home() {
       <NavBar />
       <div className="flex flex-row">
         <Filter filters={filters} setFilters={setFilters} />
-        <div className="p-10 dark:bg-gray-900">
+        <div className="flex flex-1 flex-col p-10 dark:bg-gray-900">
           {query ? (
             <>
               <h2 className="text-2xl font-semibold text-gray-900 dark:text-white">
-                You Searched For: <span className="text-blue-600 dark:text-blue-400">"{query}"</span>
-                <div className="mb-6 mt-2 h-1 w-full max-w-xs bg-blue-500"></div>
+                You Searched For: <span className="text-blue-600 dark:text-blue-400">&quot;{query}&quot;</span>
+                <div className="mt-2 mb-6 h-1 w-full max-w-xs bg-blue-500"></div>
               </h2>
-              <div className="flex flex-wrap gap-10 ">
+              <div className="flex flex-wrap gap-5">
                 {queriedEvents.map((event, index) => (
                   <EventPreviewCard key={index} handleCardClick={() => handleCardClick(event)} event={event} />
                 ))}
               </div>
             </>
           ) : (
-            <div className="flex flex-wrap gap-10 ">
+            <div className="flex flex-wrap gap-5">
               {filteredEvents.map((event, index) => (
                 <EventPreviewCard key={index} handleCardClick={() => handleCardClick(event)} event={event} />
               ))}

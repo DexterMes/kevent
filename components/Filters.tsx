@@ -13,7 +13,7 @@ const Filter: React.FC<FilterProps> = ({ filters, setFilters }) => {
   const handlePriceChange = (e: React.ChangeEvent<HTMLInputElement>) => setFilters({ ...filters, price: Number(e.target.value) })
 
   return (
-    <div className="w-70 h-[100vh] min-w-64 bg-gray-100 p-4 dark:bg-gray-800">
+    <div className="h-[100vh] w-70 min-w-64 bg-gray-100 p-4 dark:bg-gray-800">
       <h2 className="mb-4 text-lg font-semibold text-gray-900 dark:text-white">Filters</h2>
 
       {/* Time Filter */}
@@ -30,7 +30,7 @@ const Filter: React.FC<FilterProps> = ({ filters, setFilters }) => {
                 onChange={handleTimeChange}
                 className="h-4 w-4 border-gray-300 bg-gray-100 text-blue-600 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-blue-600"
               />
-              <span className="ml-2 text-sm capitalize text-gray-900 dark:text-gray-300">{time == "all" ? time : "This " + time}</span>
+              <span className="ml-2 text-sm text-gray-900 capitalize dark:text-gray-300">{time == "all" ? time : "This " + time}</span>
             </label>
           ))}
         </div>
@@ -60,11 +60,12 @@ const Filter: React.FC<FilterProps> = ({ filters, setFilters }) => {
             type="range"
             min="0"
             max="1000"
+            step="50"
             value={filters.price}
             onChange={handlePriceChange}
-            className="h-2 w-[85%] cursor-pointer appearance-none rounded-lg bg-gray-200 dark:bg-gray-700"
+            className="h-2 flex-1 cursor-pointer rounded-lg bg-gray-200 dark:bg-gray-700"
           />
-          <span className="w-[15%] text-xs font-medium text-gray-900 dark:text-white">Rs. {filters.price}</span>
+          <span className="text-xs font-medium text-gray-900 dark:text-white">Rs. {filters.price}</span>
         </div>
       </div>
     </div>

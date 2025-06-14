@@ -1,5 +1,6 @@
 "use client"
 
+import Image from "next/image"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import React, { useEffect, useState } from "react"
@@ -10,6 +11,7 @@ const SignUpForm = () => {
   const router = useRouter()
   const { setToken } = useAuthContext()
 
+  const [isAllowed, setIsAllowed] = useState(true)
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -40,6 +42,8 @@ const SignUpForm = () => {
       return
     }
 
+    setIsAllowed(false)
+
     try {
       const response = await fetch("http://localhost:5000/users/register", {
         method: "POST",
@@ -55,8 +59,13 @@ const SignUpForm = () => {
         })
       })
 
-      if (!response.ok) alert("Registration failed!")
-      else router.push("/login")
+      if (!response.ok) {
+        setIsAllowed(true)
+        alert("Registration failed!")
+      } else {
+        setIsAllowed(true)
+        router.push("/login")
+      }
     } catch (err) {
       console.error(err)
       alert("Something went wrong!")
@@ -65,38 +74,25 @@ const SignUpForm = () => {
 
   useEffect(() => {
     const handleMessage = async (event: MessageEvent) => {
-      console.log("Message received:", event.data) // <=== Add this console log
-      console.log("Message received:", event.origin) // <=== Add this console log
       if (event.origin !== "https://kevent-server.onrender.com") return
 
       const { access_token } = event.data
       if (!access_token) return
 
       try {
-        // 1. Try login first
-        // let response = await fetch("http://localhost:5000/auth/login", {
-        //   method: "POST",
-        //   headers: { "Content-Type": "application/json" },
-        //   body: JSON.stringify({ access_token })
-        // })
-
-        // let result = await response.json()
-
-        let response = await fetch("http://localhost:5000/auth/signup", {
+        const response = await fetch("http://localhost:5000/auth/signup", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ access_token })
         })
-        let result = await response.json()
+        const data = await response.json()
 
         if (!response.ok) {
-          alert(result.message || "Google signup failed")
+          alert(data.message || "Google signup failed")
           return
         }
 
-        console.log("this is the reusel" + result.token)
-
-        setToken(result.token)
+        setToken(data.token)
         router.push("/")
       } catch (err) {
         console.error("Google login error:", err)
@@ -195,7 +191,7 @@ const SignUpForm = () => {
               required
               value={formData.batch}
               onChange={handleChange}
-              className=" block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400"
+              className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400"
             />
           </div>
 
@@ -245,7 +241,7 @@ const SignUpForm = () => {
               required
               checked={formData.termsAccepted}
               onChange={handleChange}
-              className="focus:ring-3 h-4 w-4 rounded border border-gray-300 bg-gray-50 focus:ring-blue-300 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800"
+              className="h-4 w-4 rounded border border-gray-300 bg-gray-50 focus:ring-3 focus:ring-blue-300 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800"
             />
           </div>
           <label htmlFor="termsAccepted" className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">
@@ -260,8 +256,13 @@ const SignUpForm = () => {
         {/* Create Account Button */}
         <button
           type="submit"
+          disabled={!isAllowed}
           onClick={handleSubmit}
-          className="w-full rounded-lg bg-blue-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700"
+          className={`mt-4 w-full rounded-lg px-4 py-2 text-center text-sm font-medium ${
+            isAllowed
+              ? "bg-blue-700 text-white hover:bg-blue-800 dark:bg-blue-600 dark:hover:bg-blue-700"
+              : "cursor-not-allowed bg-gray-400 text-gray-200"
+          } focus:ring-4 focus:ring-blue-300 focus:outline-none dark:focus:ring-blue-800`}
         >
           Create Account
         </button>
@@ -269,9 +270,9 @@ const SignUpForm = () => {
         <button
           type="button"
           onClick={handleGoogleAuth}
-          className="flex w-full items-center justify-center rounded-lg border border-gray-300 bg-white px-5 py-2.5 text-sm font-medium text-gray-600 hover:bg-gray-100 focus:outline-none focus:ring-4 focus:ring-gray-200"
+          className="flex w-full items-center justify-center rounded-lg border border-gray-300 bg-white px-5 py-2.5 text-sm font-medium text-gray-600 hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 focus:outline-none"
         >
-          <img src="https://developers.google.com/identity/images/g-logo.png" alt="Google Logo" className="mr-2 h-5 w-5" />
+          <Image src="https://developers.google.com/identity/images/g-logo.png" alt="Google Logo" width={20} height={20} className="mr-2 h-5 w-5" />
           Sign up with Google
         </button>
 

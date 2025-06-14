@@ -2,9 +2,22 @@
 
 import React, { createContext, useContext, useEffect, useState } from "react"
 
+export interface User {
+  _id: string
+  firstName: string
+  lastName: string
+  email: string
+  department?: string
+  avatarURL?: string
+  batch?: number
+  year?: number
+  googleId?: string
+  provider?: string
+}
+
 interface AuthContextType {
   token: string | null
-  user: any | null
+  user: User | null
   loading: boolean
   setToken: (token: string | null) => void
   setUser: (user: any | null) => void

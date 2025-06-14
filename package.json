@@ -1,5 +1,5 @@
 {
-  "name": "flowbite-react-template-nextjs",
+  "name": "kevent-client",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -11,26 +11,26 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "lucide-react": "^0.514.0",
-    "next": "15.3.1",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "lucide-react": "^0.515.0",
+    "next": "15.3.3",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0"
   },
   "devDependencies": {
     "@ianvs/prettier-plugin-sort-imports": "^4.4.2",
-    "@tailwindcss/postcss": "^4.1.8",
-    "@types/node": "^20",
-    "@types/react": "^18",
-    "@types/react-dom": "^18",
-    "autoprefixer": "^10.4.18",
-    "eslint": "^8",
-    "eslint-config-next": "14.1.3",
-    "eslint-config-prettier": "^9.1.0",
-    "eslint-plugin-tailwindcss": "^3.15.1",
+    "@tailwindcss/postcss": "^4.1.10",
+    "@types/node": "^24",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "autoprefixer": "^10.4.21",
+    "eslint": "^9",
+    "eslint-config-next": "15.3.3",
+    "eslint-config-prettier": "^10.1.5",
+    "eslint-plugin-tailwindcss": "^3.18.0",
     "postcss": "^8",
     "prettier": "^3.5.3",
-    "prettier-plugin-tailwindcss": "^0.5.14",
-    "tailwindcss": "^4.1.5",
+    "prettier-plugin-tailwindcss": "^0.6.12",
+    "tailwindcss": "^4.1.10",
     "typescript": "^5"
   }
 }

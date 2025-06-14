@@ -1,7 +1,7 @@
 "use client"
 
 import { useRouter } from "next/navigation"
-import { useContext, useEffect } from "react"
+import { useEffect } from "react"
 
 import CreateEvent from "../../../components/CreateEvent"
 import NavBar from "../../../components/NavBar"
@@ -15,7 +15,7 @@ export default function Event() {
     if (!loading && (!user || !token)) {
       router.push("/login")
     }
-  }, [user, token, router])
+  }, [user, token, router, loading])
 
   if (!loading && (!user || !token)) return null
 

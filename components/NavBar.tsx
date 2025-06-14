@@ -38,8 +38,8 @@ const NavBar = () => {
     <nav className="flex h-14 w-full items-center justify-between border-b-1 border-gray-200 bg-white px-4 py-2 dark:border-gray-700 dark:bg-gray-900">
       <div className="flex flex-row space-x-10">
         <Link href="/" className="flex items-center space-x-3 rtl:space-x-reverse">
-          <img src="/icons/Logo.svg" className="h-8" alt="Kevent Logo" />
-          <span className="self-center whitespace-nowrap text-2xl font-semibold dark:text-white">Kevent</span>
+          <Image src="/icons/Logo.svg" alt="Kevent Logo" width={32} height={32} className="h-8 w-8" />
+          <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">Kevent</span>
         </Link>
         <div className="relative mx-4 w-full max-w-md px-4 md:block">
           <div className="pointer-events-none absolute inset-y-0 start-4 flex items-center ps-3">
@@ -80,13 +80,13 @@ const NavBar = () => {
               href="/profile"
               className="aspect-square h-full overflow-hidden rounded-full border-[1.5px] border-gray-700 hover:border-gray-900 dark:border-gray-400 dark:hover:border-gray-300"
             >
-              <Image src={user.avatarURL} alt="Profile Avatar" width={40} height={40} className="cursor-pointer  rounded-full transition-transform" />
+              <Image src={user.avatarURL} alt="Profile Avatar" width={40} height={40} className="cursor-pointer rounded-full transition-transform" />
             </Link>
           </>
         ) : (
           <Link
             href="/login"
-            className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-800"
+            className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 focus:outline-none dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-800"
           >
             Sign In
           </Link>

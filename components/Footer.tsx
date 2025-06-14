@@ -1,3 +1,4 @@
+import Image from "next/image"
 import React from "react"
 
 const Footer: React.FC = () => {
@@ -9,8 +10,8 @@ const Footer: React.FC = () => {
           {/* Logo Section */}
           <div className="mb-6 md:mb-0">
             <a href="https://flowbite.com/" className="flex items-center">
-              <img src="/icons/Logo.svg" className="me-3 h-8" alt="Kevent Logo" />
-              <span className="self-center whitespace-nowrap text-2xl font-semibold dark:text-white">Kevent</span>
+              <Image src="/icons/Logo.svg" alt="Kevent Logo" width={32} height={32} className="me-3 h-8 w-8" />
+              <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">Kevent</span>
             </a>
           </div>
 
@@ -18,7 +19,7 @@ const Footer: React.FC = () => {
           <div className="grid grid-cols-2 gap-8 sm:grid-cols-3 sm:gap-6">
             {/* Resources */}
             <div>
-              <h2 className="mb-4 text-sm font-semibold uppercase text-gray-900 dark:text-white">Resources</h2>
+              <h2 className="mb-4 text-sm font-semibold text-gray-900 uppercase dark:text-white">Resources</h2>
               <ul className="font-medium text-gray-500 dark:text-gray-400">
                 <li className="mb-2">
                   <a href="https://flowbite.com/" className="hover:underline">
@@ -35,7 +36,7 @@ const Footer: React.FC = () => {
 
             {/* Follow Us */}
             <div>
-              <h2 className="mb-4 text-sm font-semibold uppercase text-gray-900 dark:text-white">Follow us</h2>
+              <h2 className="mb-4 text-sm font-semibold text-gray-900 uppercase dark:text-white">Follow us</h2>
               <ul className="font-medium text-gray-500 dark:text-gray-400">
                 <li className="mb-2">
                   <a href="https://github.com/dextermes" className="hover:underline">
@@ -52,7 +53,7 @@ const Footer: React.FC = () => {
 
             {/* Legal */}
             <div>
-              <h2 className="mb-4 text-sm font-semibold uppercase text-gray-900 dark:text-white">Legal</h2>
+              <h2 className="mb-4 text-sm font-semibold text-gray-900 uppercase dark:text-white">Legal</h2>
               <ul className="font-medium text-gray-500 dark:text-gray-400">
                 <li className="mb-2">
                   <a href="#" className="hover:underline">
@@ -70,12 +71,12 @@ const Footer: React.FC = () => {
         </div>
 
         {/* Footer Divider */}
-        <hr className="my-6 border-gray-200 dark:border-gray-700 sm:mx-auto lg:my-8" />
+        <hr className="my-6 border-gray-200 sm:mx-auto lg:my-8 dark:border-gray-700" />
 
         {/* Footer Bottom */}
         <div className="sm:flex sm:items-center sm:justify-between">
           {/* Copyright */}
-          <span className="text-sm text-gray-500 dark:text-gray-400 sm:text-center">
+          <span className="text-sm text-gray-500 sm:text-center dark:text-gray-400">
             © 2023{" "}
             <a href="https://kabinbhandari.com.np/" className="hover:underline">
               Kabin Bhandari™

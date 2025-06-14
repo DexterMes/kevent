@@ -1,9 +1,13 @@
+import { Heart, Tag } from "lucide-react"
+import Image from "next/image"
+import Link from "next/link"
 import React, { useState } from "react"
-import { FaHeart, FaTag } from "react-icons/fa"
+
+import { Event } from "../app/page"
 
 interface UserEventPreviewCardProps {
-  event: any
-  handleCardClick: () => void // Optional handler for the "Edit" button
+  event: Event
+  handleCardClick: () => void
 }
 
 const EventPreviewCard: React.FC<UserEventPreviewCardProps> = ({ event, handleCardClick }) => {
@@ -30,17 +34,18 @@ const EventPreviewCard: React.FC<UserEventPreviewCardProps> = ({ event, handleCa
     >
       <div className="flex h-full flex-col">
         <div className="relative h-2/5 flex-shrink-0">
-          <a href="#">
-            <img className="h-full w-full rounded-lg object-cover" src={event.mainImage} alt={event.Title} />
-          </a>
+          <Link href="/" className="relative block h-full w-full overflow-hidden rounded-lg">
+            <Image src={event.mainImage} alt={event.Title} fill className="rounded-lg object-cover" sizes="100vw" />
+          </Link>
+
           <div
             onClick={(e) => {
               e.stopPropagation()
               setLike(!like)
             }}
-            className="absolute -bottom-4 right-2 flex h-8 w-8 items-center justify-center rounded-full bg-white p-0 shadow-inner hover:bg-gray-300"
+            className="absolute right-2 -bottom-4 flex h-8 w-8 items-center justify-center rounded-full bg-white p-0 shadow-inner hover:bg-gray-300"
           >
-            {like ? <FaHeart className="h-1/2 w-1/2 text-red-500" /> : <FaHeart className="h-1/2 w-1/2 text-black" />}
+            {like ? <Heart className="h-1/2 w-1/2 text-red-500" /> : <Heart className="h-1/2 w-1/2 text-black" />}
           </div>
         </div>
 
@@ -57,14 +62,14 @@ const EventPreviewCard: React.FC<UserEventPreviewCardProps> = ({ event, handleCa
               Venue: <span className="font-semibold">{event.Venue}</span>
             </p>
           </div>
-          {event.Price == 0 ? (
+          {parseInt(event.Price) == 0 ? (
             <div className="mt-1 flex items-center space-x-2 text-green-500 dark:text-green-500">
-              <FaTag className="h-4 w-4" />
+              <Tag className="h-4 w-4" />
               <span className="text-xs font-medium">Free</span>
             </div>
           ) : (
             <div className="mt-1 flex items-center space-x-2 text-gray-700 dark:text-gray-400">
-              <FaTag className="h-4 w-4" />
+              <Tag className="h-4 w-4" />
               <span className="text-xs font-medium">Rs. {event.Price}</span>
             </div>
           )}

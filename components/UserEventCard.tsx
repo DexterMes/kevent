@@ -1,4 +1,5 @@
 import { Trash2 } from "lucide-react"
+import Image from "next/image"
 import React from "react"
 
 interface UserEventCardProps {
@@ -34,30 +35,28 @@ const UserEventCard: React.FC<UserEventCardProps> = ({ event, variant, token, on
     const days = Math.floor(hours / 24)
 
     const remainingHours = hours % 24
-    const remainingMinutes = minutes % 60
 
     return `${days}d ${remainingHours}h`
   }
 
   async function deleteEvent() {
     try {
-      const res = await fetch(`http://localhost:5000/events/deleteevent/${event._id}`, {
+      await fetch(`http://localhost:5000/events/deleteevent/${event._id}`, {
         method: "DELETE",
         headers: { Authorization: `Bearer ${token}` }
       })
-      const data = await res.json()
       if (onDelete) onDelete()
-      console.log(data)
     } catch (err) {
       console.error("Error fetching tickets:", err)
     }
   }
 
   return (
-    <div className="flex h-44 w-full flex-row justify-between rounded-lg border border-gray-200 bg-white p-5 shadow hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700 md:flex-row">
+    <div className="flex h-44 w-full flex-row justify-between rounded-lg border border-gray-200 bg-white p-5 shadow hover:bg-gray-100 md:flex-row dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700">
       <div className="flex w-[50%] flex-row gap-5">
-        <img src={event.mainImage} alt={event.Title} className="h-full w-[45%] rounded-lg object-cover" />
-
+        <div className="relative h-full w-[45%] overflow-hidden rounded-lg">
+          <Image src={event.mainImage} alt={event.Title} fill className="rounded-lg object-cover" sizes="(max-width: 768px) 45vw, 45%" />
+        </div>
         <div className="flex w-[50%] flex-col leading-none">
           <h5 className="mb-2 text-xl font-bold tracking-tight text-gray-900 dark:text-white">{event.Title}</h5>
           <p className="mb-1 text-sm font-medium text-gray-700 dark:text-gray-400">Location: {event.Venue}</p>
@@ -72,7 +71,7 @@ const UserEventCard: React.FC<UserEventCardProps> = ({ event, variant, token, on
         {variant === "edit" && (
           <button
             onClick={deleteEvent}
-            className="cursor-pointer items-center rounded-lg bg-red-600 p-2 text-sm font-medium text-white hover:bg-red-700 dark:bg-red-500 dark:hover:bg-red-600 "
+            className="cursor-pointer items-center rounded-lg bg-red-600 p-2 text-sm font-medium text-white hover:bg-red-700 dark:bg-red-500 dark:hover:bg-red-600"
           >
             <Trash2 className="h-5 w-5" />
           </button>

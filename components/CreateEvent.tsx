@@ -1,5 +1,6 @@
 "use client"
 
+import Image from "next/image"
 import React, { ChangeEvent, useState } from "react"
 
 interface FileType {
@@ -60,13 +61,11 @@ const CreateEventPage = ({ token }: { token: string }) => {
     })
 
     try {
-      const res = await fetch("http://localhost:5000/events/createevent", {
+      await fetch("http://localhost:5000/events/createevent", {
         method: "POST",
         headers: { Authorization: `Bearer ${token}` },
         body: formData
       })
-
-      const data = await res.json()
     } catch (err) {
       console.error("Error:", err)
     }
@@ -79,12 +78,16 @@ const CreateEventPage = ({ token }: { token: string }) => {
           {/* Main Image */}
           <div className="relative">
             <div className="flex h-60 w-full items-center justify-center overflow-hidden rounded-xl bg-gray-100 dark:bg-gray-800">
-              {mainImage && <img src={mainImage} alt="Main Preview" className="h-full w-full object-cover" />}
+              {mainImage && (
+                <div className="relative h-full w-full">
+                  <Image src={mainImage} alt="Main Preview" fill className="object-cover" sizes="100vw" />
+                </div>
+              )}
             </div>
 
             <button
               type="button"
-              className="absolute left-0 top-0 flex h-full w-full cursor-pointer items-center justify-center rounded-xl bg-gray-50/25"
+              className="absolute top-0 left-0 flex h-full w-full cursor-pointer items-center justify-center rounded-xl bg-gray-50/25"
               onClick={() => document.getElementById("mainImageInput")?.click()}
             >
               <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10" viewBox="0 0 24 24" fill="currentColor">
@@ -239,7 +242,7 @@ const CreateEventPage = ({ token }: { token: string }) => {
                     <button
                       type="button"
                       onClick={() => handleRemoveFile(index)}
-                      className="cursor-pointer rounded-full bg-gray-300 px-[0.35rem] text-xs leading-none text-gray-600 hover:bg-gray-400 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600 "
+                      className="cursor-pointer rounded-full bg-gray-300 px-[0.35rem] text-xs leading-none text-gray-600 hover:bg-gray-400 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600"
                     >
                       ✕
                     </button>

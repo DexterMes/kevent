@@ -1,7 +1,7 @@
 "use client"
 
 import { useRouter } from "next/navigation"
-import { useEffect, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 
 import EditProfile from "../../components/EditProfile"
 import NavBar from "../../components/NavBar"
@@ -13,7 +13,7 @@ export interface Event {
   _id: string
   Title: string
   Venue: string
-  date: string // ISO date string
+  date: string
   mainImage: string
 }
 
@@ -35,7 +35,7 @@ export default function Profile() {
 
   const router = useRouter()
 
-  const fetchEvents = async () => {
+  const fetchEvents = useCallback(async () => {
     try {
       const res = await fetch("http://localhost:5000/users/viewevents", {
         headers: { Authorization: `Bearer ${token}` }
@@ -44,11 +44,11 @@ export default function Profile() {
       const data = await res.json()
 
       if (data.events && data.events.length) setEvents([...data.events])
-      if (!data.events || !data.events.length) setEvents([])
+      else setEvents([])
     } catch (err) {
       console.error("Error fetching tickets:", err)
     }
-  }
+  }, [token])
 
   useEffect(() => {
     if (!loading && (!user || !token)) router.push("/login")
@@ -81,7 +81,7 @@ export default function Profile() {
 
     if (token) fetchEvents()
     if (token) fetchTickets()
-  }, [user, token, router])
+  }, [user, token, router, loading, fetchEvents])
 
   if (loading) {
     return (

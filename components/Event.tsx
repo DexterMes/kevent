@@ -1,47 +1,56 @@
 "use client"
 
-import { useSearchParams } from "next/navigation"
+import { Download } from "lucide-react"
+import Image from "next/image"
+import { useRouter, useSearchParams } from "next/navigation"
 import React, { useEffect, useState } from "react"
-import { IoMdDownload } from "react-icons/io"
 
+import { Event } from "../app/page"
 import { useAuthContext } from "../contexts/AuthContext"
 
 const EventDetails: React.FC = () => {
-  const [event, setEvent] = useState<any>(null)
+  const [event, setEvent] = useState<Event | null>(null)
+  const [ticketPrice, setTicketPrice] = useState(0)
   const [numTickets, setNumTickets] = useState(1)
+  const [isAllowed, setIsAllowed] = useState(true)
+
+  const router = useRouter()
+  const { token } = useAuthContext()
 
   const searchParams = useSearchParams()
   const query = searchParams.get("query")?.toLowerCase() || ""
 
-  const pricePerTicket = event?.Price ? parseInt(event.Price) : 0
-  const totalPrice = numTickets * pricePerTicket
-
-  const { token } = useAuthContext()
-
-  async function createBooking() {
-    try {
-      const res = await fetch(`http://localhost:5000/tickets/booktickets/${event._id}`, {
-        method: "POST",
-        body: JSON.stringify({ ticket: numTickets }),
-        headers: { Authorization: `Bearer ${token}` }
-      })
-      const data = await res.json()
-      console.log(data)
-    } catch (err) {
-      console.error("Error booking tickets:", err)
-    }
-  }
+  const totalPrice = numTickets * ticketPrice
 
   useEffect(() => {
     const fetchEvent = async () => {
       const res = await fetch(`http://localhost:5000/events/viewevent/${query}`)
       const data = await res.json()
-      console.log(data)
       setEvent(data.event)
+      setTicketPrice(data.event.Price ? parseInt(data.event.Price) : 0)
     }
-
     fetchEvent()
-  }, [])
+  }, [query])
+
+  async function createBooking() {
+    setIsAllowed(false)
+    try {
+      if (!event || !event._id) return
+      const res = await fetch(`http://localhost:5000/tickets/booktickets/${event._id}`, {
+        method: "POST",
+        body: JSON.stringify({ ticket: numTickets }),
+        headers: { Authorization: `Bearer ${token}` }
+      })
+
+      if (!res.ok) setIsAllowed(true)
+      else {
+        setIsAllowed(true)
+        router.push("/")
+      }
+    } catch (err) {
+      console.error("Error booking tickets:", err)
+    }
+  }
 
   if (!event) return <div className="p-12 text-white">Loading...</div>
 
@@ -56,20 +65,14 @@ const EventDetails: React.FC = () => {
   })
 
   return (
-    <div className="min-h-screen bg-white dark:bg-gray-900">
-      {/* Main Image (Banner) */}
-      <div className="w-full">
-        <img src={event.mainImage} alt="Event Banner" className="h-80 w-full object-cover" />
+    <div className="bg-white dark:bg-gray-900">
+      <div className="relative h-80 w-full">
+        <Image src={event.mainImage} alt="Event Banner" fill className="object-cover" />
       </div>
 
       <div className="px-20 py-12">
-        {/* Event Title */}
         <h1 className="mt-4 text-4xl font-bold text-gray-900 dark:text-white">{event.Title}</h1>
-
-        {/* Event Description */}
         <p className="mt-2 text-gray-700 dark:text-gray-300">{event.Description}</p>
-
-        {/* Event Details */}
         <div className="mt-6 flex flex-row items-center gap-x-96">
           <div>
             <h2 className="text-2xl font-semibold text-gray-900 dark:text-white">Event Details</h2>
@@ -104,7 +107,7 @@ const EventDetails: React.FC = () => {
             <h3 className="text-xl font-bold text-gray-900 dark:text-white">Book Ticket</h3>
             <div className="mt-2">
               <p className="text-gray-700 dark:text-gray-300">
-                Rs. {pricePerTicket} x{" "}
+                Rs. {ticketPrice} x{" "}
                 <input
                   type="number"
                   value={numTickets}
@@ -126,7 +129,12 @@ const EventDetails: React.FC = () => {
             </div>
             <button
               onClick={createBooking}
-              className="mt-4 w-full rounded-lg bg-blue-700 px-4 py-2 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+              disabled={!isAllowed}
+              className={`mt-4 w-full rounded-lg px-4 py-2 text-center text-sm font-medium ${
+                isAllowed
+                  ? "bg-blue-700 text-white hover:bg-blue-800 dark:bg-blue-600 dark:hover:bg-blue-700"
+                  : "cursor-not-allowed bg-gray-400 text-gray-200"
+              } focus:ring-4 focus:ring-blue-300 focus:outline-none dark:focus:ring-blue-800`}
             >
               Book
             </button>
@@ -143,22 +151,19 @@ const EventDetails: React.FC = () => {
                   key={index}
                   className="relative flex h-36 w-36 items-center justify-center overflow-hidden rounded-lg bg-gray-200 shadow-md hover:bg-gray-300"
                 >
-                  {file.type === "pdf" ? (
-                    <div className="flex h-full w-full flex-col items-center justify-center bg-red-100 text-red-600">
-                      <img src="/icons/pdf.svg" className="h-1/2 w-1/2" alt="PDF Icon" />
-                    </div>
-                  ) : (
-                    <img src={file.url} alt={file.name} className="h-full w-full object-cover" />
-                  )}
-                  <div className="absolute inset-0 flex flex-col items-center justify-between bg-black bg-opacity-50 p-4 opacity-0 transition-opacity hover:opacity-100">
+                  <div className="flex h-full w-full flex-col items-center justify-center bg-red-100 text-red-600">
+                    <Image src="/icons/pdf.svg" alt="PDF Icon" width={48} height={48} className="h-1/2 w-1/2" />
+                  </div>
+
+                  <div className="bg-opacity-50 absolute inset-0 flex flex-col items-center justify-between bg-black p-4 opacity-0 transition-opacity hover:opacity-100">
                     <p className="self-start text-sm font-medium text-white">{file.name}</p>
                     <a
                       href={file.url}
                       download
-                      className="absolute bottom-4 right-4 h-8 w-8 rounded bg-gray-600 text-white transition hover:bg-gray-500"
+                      className="absolute right-4 bottom-4 h-8 w-8 rounded bg-gray-600 text-white transition hover:bg-gray-500"
                     >
                       <i className="flex h-full w-full items-center justify-center">
-                        <IoMdDownload />
+                        <Download />
                       </i>
                     </a>
                   </div>

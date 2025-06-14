@@ -1,6 +1,5 @@
 import { CalendarClock, History, LogOut, Tickets, User } from "lucide-react"
 import Link from "next/link"
-import { useRouter } from "next/navigation"
 
 import { useAuthContext } from "../contexts/AuthContext"
 
@@ -8,7 +7,7 @@ const Sidebar = ({ setSelectedOption, selectedOption }: { setSelectedOption: (op
   const { logout } = useAuthContext()
 
   return (
-    <div id="sidebar" className="z-40 h-full w-[15%] bg-gray-100 dark:bg-gray-800 sm:translate-x-0" aria-label="Sidebar">
+    <div id="sidebar" className="z-40 h-full w-[15%] bg-gray-100 sm:translate-x-0 dark:bg-gray-800" aria-label="Sidebar">
       <div className="flex h-[calc(100vh-3.5rem)] flex-col justify-between overflow-y-auto px-3 py-8">
         {/* Menu Items */}
         <ul className="space-y-2 font-medium">
@@ -63,7 +62,7 @@ const Sidebar = ({ setSelectedOption, selectedOption }: { setSelectedOption: (op
         <Link href="/login">
           <button
             onClick={() => logout()}
-            className={`group flex w-full items-center rounded-lg p-2 font-medium hover:bg-gray-200 dark:hover:bg-gray-700 `}
+            className={`group flex w-full items-center rounded-lg p-2 font-medium hover:bg-gray-200 dark:hover:bg-gray-700`}
           >
             <LogOut className="h-4 w-4" />
             <span className="ml-3">Logout</span>
